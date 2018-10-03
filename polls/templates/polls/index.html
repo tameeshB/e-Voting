@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		{% load static %}
+		<title>e-Voting portal | {{electionName}} </title>
+		<meta charset="utf-8" />
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'polls/css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'polls/css/noscript.css' %}" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<span class="icon fa-diamond"></span>
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>e-Voting</h1>
+								{% if user %}
+								<p>Hi! {{user}}!<br>
+									You can view Contenders for the {{electionName}} by clicking on "Contenders" tab below.<br>
+									Please proceed to voting for your candidates for the {{electionName}}.<br>
+									{% if hasBegun %}
+										Make sure to vote in {{hoursUntilEnd}} hours.
+									{%else%}
+										{{hoursUntilEnd}} hours to elections.
+									{% endif %}
+								</p>
+								{% else %}
+									<p>Welcome to {{electionName}}.<br>
+										You can view Contenders for the {{electionName}} by clicking on "Contenders" tab below.<br>
+										{% if hasBegun %}
+											Please log-in before proceeding.<br>
+											Make sure to vote in {{hoursUntilEnd}} hours.
+										{%else%}
+											{{hoursUntilEnd}} hours to elections.
+										{% endif %}
+									</p>
+								{% endif %}
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#contenders">Contenders</a></li>
+								{% if user %}
+									<li><a href="#vote">Vote</a></li>
+									<li><a href="/logout">LogOut</a></li>
+								{% else %}	
+								<li><a href="#login">Login</a></li>
+								{% endif %}
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+						<!-- Intro -->
+						<article id="contenders">
+								<h2 class="major">Contenders</h2>
+								{% for position in positions %}
+								<section>
+									<h3>{{position.posName}}</h3>
+									<hr />
+									{% for candidate in position.candidates %}
+										<h4>{{candidate.name}} : <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a></h2>
+									{% endfor %}
+									<hr />
+								</section>
+								{% endfor %}
+						</article>
+						{% if user %}
+							<article id="vote">
+									<h2 class="major">Vote</h2>
+									<form method="post" action="#">
+										<div class="fields">
+											{% for position in positions %}
+											<div class="field">
+												<label for="demo-category">{{position.posName}}</label>
+												<!-- <select name="{{position.posID}}" id="demo-category">
+													<option disabled selected value> -- select an option -- </option>
+													{% for candidate in position.candidates %}
+													<option value="{{candidate.voterID}}">
+														{{candidate.name}} : <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a>
+													</option>
+													{% endfor %}
+												</select> -->
+												{% for candidate in position.candidates %}
+												<div class="field half">
+													<input type="radio" id="{{position.posID}}_{{candidate.voterID}}" name="{{position.posID}}" value="{{candidate.voterID}}">
+													<label for="{{position.posID}}_{{candidate.voterID}}"> {{candidate.name}}  | <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a></label>
+												</div>
+												{% endfor %}
+											</div>
+											{% endfor %}
+										</div>
+										<ul class="actions">
+											<li><input type="submit" value="Vote" class="primary" /></li>
+											<li><input type="reset" value="Reset" /></li>
+										</ul>
+									</form>
+							</article>
+						{% else %}	
+							<article id="login">
+								<h2 class="major">Login</h2>
+								<form method="post" action="">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">RollNo.</label>
+											<input type="text" name="name" id="name" placeholder="1601CS11" />
+										</div>
+										<div class="field half">
+											<label for="password">SSO Password</label>
+											<input type="password" name="password" id="password" />
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Login" class="primary" /></li>
+										<li><input type="reset" value="Reset" /></li>
+									</ul>
+								</form>
+							</article>
+						{% endif %}
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<!-- <p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p> -->
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="{% static 'polls/css/noscript.css' %}"></script>
+			<script src="{% static 'polls/js/browser.min.js' %}"></script>
+			<script src="{% static 'polls/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'polls/js/util.js' %}"></script>
+			<script src="{% static 'polls/js/main.js' %}"></script>
+
+	</body>
+</html>
