@@ -11,6 +11,7 @@
 		<meta charset="utf-8" />
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" type="image/png" href="{% static 'polls/images/logo.png' %}" />
 		<link rel="stylesheet" href="{% static 'polls/css/main.css' %}" />
 		<noscript><link rel="stylesheet" href="{% static 'polls/css/noscript.css' %}" /></noscript>
 	</head>
@@ -22,7 +23,8 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="logo">
-							<span class="icon fa-diamond"></span>
+							<!-- <span class="icon fa-diamond"></span> -->
+							<img src="{% static 'polls/images/logo.png' %}" alt="" height="68" width="68" style="opacity:0.4;transform: translateY(15%)">
 						</div>
 						<div class="content">
 							<div class="inner">
@@ -109,7 +111,7 @@
 											<li><input type="reset" value="Reset" /></li>
 										</ul>
 									</form>
-							</article>
+								</article>
 						{% else %}	
 							<article id="login">
 								<h2 class="major">Login</h2>

@@ -1299,6 +1299,7 @@ input, select, textarea {
 				padding: 3rem 2rem;
 				max-height: 40rem;
 				overflow: hidden;
+				background: #1d1c2361;
 			}
 
 				#header .content .inner > :last-child {
@@ -1327,6 +1328,7 @@ input, select, textarea {
 			#header nav ul li {
 				padding-left: 0;
 				border-left: solid 1px #ffffff;
+				background: #1d1c2361;
 			}
 
 				#header nav ul li:first-child {
