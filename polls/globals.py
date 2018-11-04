@@ -1,3 +1,4 @@
+secretHash = ''
 globals = {
     'electionName' : 'Gymkhana Elections 2018',
     'hasBegun' : True,
