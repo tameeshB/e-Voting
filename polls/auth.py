@@ -3,11 +3,10 @@ from hashlib import sha256
 from random import randint
 # [5 digits][sha256 hash of that number]
 def authenticate(rollNo, password, token):
-    return False
-    pass
+    return valToken(token)
 def valToken(token):
     tokenID = token[:6]
-    if sha256((str(tokenID)+secretHash).encode('utf-8')).hexdigest() != token[6:] or isUsed(token):
+    if sha256((str(tokenID)+secretHash).encode('utf-8')).hexdigest()[:6] != token[6:] or isUsed(token):
         return False
     return True
 def markTokenUsed(token):
@@ -27,4 +26,4 @@ def isUsed(token):
 def genToken(token):
     # fetch random 5 digit unused number
     tokenID = randint(10000,99999)
-    return str(tokenID)+sha256((str(tokenID)+secretHash).encode('utf-8')).hexdigest()
+    return str(tokenID)+sha256((str(tokenID)+secretHash).encode('utf-8')).hexdigest()[:6]
