@@ -23,10 +23,15 @@ def login(request):
             authResult =  auth.authenticate(request.POST['name'],request.POST['password'],request.POST['token'])
             if authResult == True:
                 request.session['token'] = request.POST['token']
-                request.session['rollno'] = request.POST['name']
-                request.session['bucket'] = bucket.process(request.POST['name'],request.session['hostel'],request.session['gender'])
-                print('Authenticated!')
-                return HttpResponseRedirect(reverse('polls:vote'))
+                request.session['rollno'] = request.POST['name'] # @todo: rollno
+                # request.session['bucket'] = bucket.process(request.POST['name'],request.session['hostel'],request.session['gender'])
+                bucketProcess = bucket.process(request.POST['name'],'BH1','M')
+                if not bucketProcess['status']:
+                    messageList.append(bucketProcess['data'])
+                else:
+                    request.session['bucket'] = bucketProcess['data']
+                    print('Authenticated!')
+                    return HttpResponseRedirect(reverse('polls:vote'))
             else:
                 messageList.append(authResult)
         except KeyError:
@@ -43,11 +48,12 @@ def login(request):
 
 def vote(request):
     # Not authenticated
-    if 'token' not in request.session.keys():
+    if 'token' not in request.session.keys() and 'rollno' not in request.session.keys():
         messages.add_message(request, messages.ERROR, 'Please log-in before voting.')
         return HttpResponseRedirect(reverse('polls:login'))
-    positions = bucket.fetchPositions(request.session['bucket'])
+    positionList = bucket.fetchPositions(request.session['bucket'])
     context = {}
     context.update(globals.globals)
-    context.update({'positions': positions})
+    context.update({'positions': positionList,'user':request.session['rollno']})
+    print(positionList)
     return render(request, 'polls/vote.html', context)

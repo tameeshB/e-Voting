@@ -29,6 +29,8 @@ class Positions(models.Model):
     posName = models.CharField(max_length=200)
     def __str__(self):
         return self.posID
+    class Meta:
+        verbose_name_plural = "Positions"
 
 
 class Candidate(models.Model):

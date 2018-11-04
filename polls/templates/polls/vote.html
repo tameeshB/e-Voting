@@ -93,15 +93,15 @@
 												<!-- <select name="{{position.posID}}" id="demo-category">
 													<option disabled selected value> -- select an option -- </option>
 													{% for candidate in position.candidates %}
-													<option value="{{candidate.voterID}}">
+													<option value="{{candidate.id}}">
 														{{candidate.name}} : <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a>
 													</option>
 													{% endfor %}
 												</select> -->
 												{% for candidate in position.candidates %}
 												<div class="field half">
-													<input type="radio" id="{{position.posID}}_{{candidate.voterID}}" name="{{position.posID}}" value="{{candidate.voterID}}">
-													<label for="{{position.posID}}_{{candidate.voterID}}"> {{candidate.name}}  | <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a></label>
+													<input type="radio" id="{{position.posID}}_{{candidate.id}}" name="{{position.posID}}" value="{{candidate.id}}">
+													<label for="{{position.posID}}_{{candidate.id}}"> {{candidate.name}}  | <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a></label>
 												</div>
 												{% endfor %}
 											</div>
