@@ -9,6 +9,7 @@
 		{% load static %}
 		<title>e-Voting portal | {{electionName}} </title>
 		<meta charset="utf-8" />
+		<meta name="theme-color" content="#1d1c23">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="icon" type="image/png" href="{% static 'polls/images/logo.png' %}" />
@@ -115,7 +116,14 @@
 						{% else %}	
 							<article id="login">
 								<h2 class="major">Login</h2>
-								<form method="post" action="">
+								{% if error %}
+									<script>
+										window.location = '#login';
+									</script>
+									<div id="error">{{ error }}</div>
+								{% endif %}
+								<form method="post" action="{% url 'polls:login' %}">
+									{% csrf_token %}
 									<div class="fields">
 										<div class="field half">
 											<label for="name">RollNo.</label>
@@ -124,6 +132,10 @@
 										<div class="field half">
 											<label for="password">SSO Password</label>
 											<input type="password" name="password" id="password" />
+										</div>
+										<div class="field">
+											<label for="token">One Time Token:</label>
+											<input type="password" name="token" id="token" />
 										</div>
 									</div>
 									<ul class="actions">
