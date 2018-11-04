@@ -3,31 +3,41 @@ from django.db import models
 # Create your models here.
 class Voters(models.Model):
     voterID = models.CharField(max_length=200,primary_key=True) # is roll No.
-    name = models.CharField(max_length=200)
     hasVoted = models.BooleanField(default=False)
-    dateTime = models.DateTimeField('date voted',null=True)
-    batch = models.IntegerField(default=0) # first 4 digits of rollNo.
-    hostel = models.CharField(max_length=4)
+    #TODO: add bucket
     def __str__(self):
         return self.voterID
     def __rep__(self):
         return self.voterID
 
 
+class Bucket(models.Model):
+    bucketName = models.CharField(max_length=200,null=False)
+    # rollnoRegex = models.CharField(max_length=200,null=False)
+    gender = models.CharField(max_length=1, choices=(('F', 'Female'), ('M', 'Male')))
+    hostel = models.CharField(max_length=3, choices=(('BH1', 'Boys-Hostel1'), ('GH1', 'Girls-Hostel1')))
+    year = models.IntegerField(choices=((15, '15'), (16, '16'), (17, '17'), (18, '18')))
+    course = models.CharField(max_length=1, choices=(('B', 'BTech'), ('M', 'MTech'), ('P', 'Phd')))
+
+    def __str__(self):
+        return self.bucketName
+
+
 class Positions(models.Model):
     posID = models.CharField(max_length=200,primary_key=True) # concat noormalised string unique for position
-    canVoteFor = models.CharField(max_length=100) # regex string for which batches can vote for this position.
+    buckets = models.ManyToManyField(Bucket)
     posName = models.CharField(max_length=200)
-    batch = models.IntegerField(default=0) # first 4 digits of rollNo.
     def __str__(self):
         return self.posID
 
 
 class Candidate(models.Model):
-    voterID = models.ForeignKey(Voters, on_delete=models.CASCADE) # candidate is also a voter. 
     votes = models.IntegerField(default=0) # 0 votes initially
+    name = models.CharField(max_length=200,null=False,default="")
     agendaURL = models.CharField(max_length=1000,null=True)
     position = models.ForeignKey(Positions, on_delete=models.CASCADE) # candidate is also a voter. 
+    def __str__(self):
+        return (self.name, self.position, self.agendaURL)
 
 
 class votes1(models.Model):

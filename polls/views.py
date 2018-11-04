@@ -47,3 +47,4 @@ def vote(request):
             pass
     return HttpResponseRedirect(reverse('polls:index'))
     # return HttpResponse(template.render(context, request))
+ 
