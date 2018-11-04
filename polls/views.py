@@ -10,22 +10,27 @@ import polls.globals as globals
 def index(request):
     template = loader.get_template('polls/index.html')
     return HttpResponse(template.render(globals.globals, request))
+
 def login(request):
     print(request.POST)
+    authResult = ''
     # print(type(request.POST['name']))
     if request.POST:
         try:
-            if auth.authenticate(request.POST['name'],request.POST['password'],request.POST['token']):
+            authResult =  auth.authenticate(request.POST['name'],request.POST['password'],request.POST['token'])
+            if authResult == True:
                 request.session['token'] = request.POST['token']
                 request.session['rollno'] = request.POST['name']
+                print('Authenticated!')
                 return HttpResponseRedirect(reverse('polls:vote'))
         except KeyError:
             pass
         except MultiValueDictKeyError:
             pass
+    
     context = {}
     context.update(globals.globals)
-    context.update({'error':'Wrong Password'})
+    context.update({'error': authResult})
     
     return render(request, 'polls/index.html', context)
 
