@@ -116,14 +116,11 @@
 						{% else %}	
 							<article id="login">
 								<h2 class="major">Login</h2>
-								{% if messages %}
+								{% if error %}
 									<script>
 										window.location = '#login';
 									</script>
-									{% for message in messages %}
-									<div id="error">{{ message }}</div><br>
-									{% endfor %}
-									
+									<div id="error">{{ error }}</div>
 								{% endif %}
 								<form method="post" action="{% url 'polls:login' %}">
 									{% csrf_token %}

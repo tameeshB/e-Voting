@@ -3,7 +3,7 @@ globals = {
     'electionName' : 'Gymkhana Elections 2018',
     'hasBegun' : True,
     'user' : False,
-    'error' : False,
+    'messages' : [],
     'positions' : [
         {
             'posName':'VP',

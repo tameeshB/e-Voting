@@ -16,7 +16,7 @@ class Bucket(models.Model):
     # rollnoRegex = models.CharField(max_length=200,null=False)
     gender = models.CharField(max_length=1, choices=(('F', 'Female'), ('M', 'Male')))
     hostel = models.CharField(max_length=3, choices=(('BH1', 'Boys-Hostel1'), ('GH1', 'Girls-Hostel1')))
-    year = models.IntegerField(choices=((15, '15'), (16, '16'), (17, '17'), (18, '18')))
+    year = models.IntegerField(choices=((0, 'All'),(15, '15'), (16, '16'), (17, '17'), (18, '18')))
     course = models.CharField(max_length=1, choices=(('B', 'BTech'), ('M', 'MTech'), ('P', 'Phd')))
 
     def __str__(self):
@@ -37,7 +37,7 @@ class Candidate(models.Model):
     agendaURL = models.CharField(max_length=1000,null=True)
     position = models.ForeignKey(Positions, on_delete=models.CASCADE) # candidate is also a voter. 
     def __str__(self):
-        return (self.name, self.position, self.agendaURL)
+        return self.name
 
 
 class votes1(models.Model):
