@@ -55,3 +55,21 @@ class votes2(models.Model):
 class TokenID(models.Model):
     tokenID = models.CharField(max_length=5,primary_key=True)
     used = models.BooleanField(default=False)
+
+
+class TokenNo(models.Model):
+    tokenNo = models.IntegerField(default=0)
+    def save(self):
+        from polls.auth import genToken
+        if self.pk is not None:
+            orig = TokenNo.objects.get(pk=self.pk)
+        for i in range(self.tokenNo):
+            genToken() #optimise
+        super(TokenNo, self).save()
+        TokenNo.objects.all().delete()
+
+class TokenDash(TokenNo):
+    class Meta:
+        proxy = True
+        verbose_name = 'Token Dashboard'
+        verbose_name_plural = 'Token Dashboard'

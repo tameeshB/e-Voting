@@ -2,7 +2,6 @@ from polls.globals import secretHash
 from hashlib import sha256
 from random import randint
 from .models import TokenID
-
 # [5 digits][sha256 hash of that number]
 def authenticate(rollNo, password, token):
 
