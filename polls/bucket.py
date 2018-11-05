@@ -1,4 +1,5 @@
 from polls.models import Bucket,Candidate,Positions
+
 def process(rollNo, hostel, gender):
     print(rollNo, hostel, gender)
     course = {
@@ -6,12 +7,13 @@ def process(rollNo, hostel, gender):
         '1':'M',
         '2':'P',
     }[rollNo[2]]
-    year = rollNo[:2] if course == 'B' else 0
+    year = rollNo[:2] if course == 'B' else '0'
     matchingBuckets = Bucket.objects.filter(gender=gender,year=year,course=course,hostel=hostel)
     if len(matchingBuckets)==1:
         return {'status':True,'data':matchingBuckets[0].id}
     else:
         return {'status':False,'data':'No buckets found.'}
+
 def fetchPositions(bucketID):
     # 'positions' : [
     #     {
