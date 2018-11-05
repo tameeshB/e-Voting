@@ -9,7 +9,11 @@ def storeVote(request):
 	# print(request.POST)
 	try:
 		token = request.session['token']
-		voterID = request.session['rollno']
+		voterID = request.session['rollno'].lower()
+		
+		if len(Voters.objects.filter(voterID=voterID)) > 0:
+			return {'status': False, 'data': 'User {} has already voted!'.format(voterID)}
+
 		tokenID = token[:5]
 
 		voteJSON = str(request.POST)
@@ -20,14 +24,14 @@ def storeVote(request):
 
 		# Mark token as used, mark user as voted
 		markTokenUsed(tokenID)
-		markVoted(voterID.lower())
+		markVoted(voterID)
 
 		signature = genSignature(tokenID, voteJSON)
-		result = {'status': True, 'data': signature}
+		return {'status': True, 'data': signature}
+	
 	except TokenID.DoesNotExist as e:
-		result = {'status': False, 'data': 'Invalid Token! Vote not recorded!'}
+		return {'status': False, 'data': 'Invalid Token! Vote not recorded!'}
 
-	return result
 
 
 def markTokenUsed(tokenID):
@@ -43,3 +47,9 @@ def markVoted(voterID):
 
 def genSignature(tokenID, voteJSON):
 	return sha256((str(tokenID)+secretHash+voteJSON).encode('utf-8')).hexdigest()
+
+
+def tallyVotes():
+	from polls.models import Positions, Candidate
+
+	pass
