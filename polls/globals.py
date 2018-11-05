@@ -10,5 +10,11 @@ globals = {
     'user' : False, # remove
     'messages' : [],
     'positions' : []
+    'smtp':{
+        'host':'mail.iitp.ac.in',
+        'port': 587,
+        'sender' : 'email@iitp.ac.in',
+        'pass' : ' '
+    }
 }
 setDuringInit = ['hostels','gender']

@@ -65,7 +65,7 @@
 								{% endfor %}
 								</b>
 						</article>
-						{% if next %}
+						{% if next and messages %}
 							<script>
 								{% if next == "vote" %}
 									window.location = '#vote';

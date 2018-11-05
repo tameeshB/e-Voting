@@ -82,6 +82,7 @@ def login(request):
     # print(context)
     return render(request, 'polls/index.html', context)
 
+
 def vote(request):
     # Not authenticated
     messageList = []
@@ -103,7 +104,6 @@ def vote(request):
     context.update({'positions': positionList,'user':request.session['rollno']})
     context.update({'messages': messageList,'next':'vote'})
     return render(request, 'polls/vote.html', context)
-
 
 
 def logout(request):
