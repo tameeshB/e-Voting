@@ -1,4 +1,4 @@
-import smtplib
+import smtplib,os
 from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -17,7 +17,7 @@ def sendMail(to, subject, body):
     try:
         s = smtplib.SMTP(
             host = os.environ.get('smtp_host') or globals['smtp']['host'],
-            port = os.environ.get('smtp_host') or globals['smtp']['host']
+            port = os.environ.get('smtp_port') or globals['smtp']['port']
         )
         s.starttls()
         s.login(
