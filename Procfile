@@ -1,1 +1,1 @@
-web: gunicorn evoting.wsgi
+web: gunicorn -b 0.0.0.0:$PORT -w 3 evoting.wsgi

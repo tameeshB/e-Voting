@@ -25,7 +25,7 @@ SECRET_KEY = '()=u%7d6+*z!eu4v+5q*4^ef^7jd###xyvw+d%&ciwfvs_4f(n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.16.181.209','localhost','127.0.0.1','0.0.0.0','172.16.189.219']
+ALLOWED_HOSTS = ['evoting18.herokuapp.com', '172.16.181.209','localhost','127.0.0.1','0.0.0.0','172.16.189.219']
 
 
 # Application definition
@@ -123,7 +123,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/dev/howto/static-files/
+# # Static files (CSS, JavaScript, Images)
+# # https://docs.djangoproject.com/en/dev/howto/static-files/
 
+# STATIC_URL = '/static/'
+
+# From https://devcenter.heroku.com/articles/django-assets
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    # os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'polls', 'static'),
+)
