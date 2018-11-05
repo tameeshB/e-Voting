@@ -1,7 +1,7 @@
 from polls.globals import secretHash
 from hashlib import sha256
 from random import randint
-from .models import TokenID,Votes1
+from .models import TokenID,Voters,Votes1
 # [5 digits][sha256 hash of that number]
 def authenticate(rollNo, password, token):
 
@@ -11,6 +11,9 @@ def authenticate(rollNo, password, token):
     tokenID = token[:5]
     if TokenID.objects.get(tokenID=tokenID).used:
         return 'Token already used!'
+    userHasVotedResult = Voters.objects.filter(voterID=rollNo)
+    if len(userHasVotedResult)>0 and userHasVotedResult[0].hasVoted:
+        return 'User has already voted!'
     return True
 
 
@@ -61,8 +64,8 @@ def getUnusedTokens():
 def getVerifySignature(token):
     if not valToken(token):
         return {'status' : False, 'data':'Invalid token.'}
-    tokenID = token[:6]
-    querySet = models.Votes1.objects.filter(tokenID=tokenID)
+    tokenID = token[:5]
+    querySet = Votes1.objects.filter(tokenID=tokenID)
     if len(querySet) == 1:
         return {'status' : True, 'data':querySet[0].signature}
     else:

@@ -74,14 +74,19 @@
 										<input type="text" name="name" id="name" placeholder="1601CS11" />
 									</div>
 									<div class="field half">
+										<label for="webmail">Webmail</label>
+										<input type="text" name="webmail" id="webmail" pattern="^[A-Za-z0-9.]+@iitp.ac.in$"/>
+									</div>
+									<div class="field half">
 										<label for="password">SSO Password</label>
 										<input type="password" name="password" id="password" />
 									</div>
-									<div class="field">
+									<div class="field half">
 										<label for="token">One Time Token:</label>
 										<!-- <input type="text" name="token" id="token" autocomplete="off" /> -->
 										<input type="text" name="token" id="token" />
 									</div>
+									
 								</div>
 								<ul class="actions">
 									<li><input type="submit" value="Login" class="primary" /></li>
@@ -116,7 +121,7 @@
 										</div>
 									</div>
 									<ul class="actions">
-										<li><input type="submit" value="Login" class="primary" /></li>
+										<li><input type="submit" value="Verify" class="primary" /></li>
 										<li><input type="reset" value="Reset" /></li>
 									</ul>
 									{% endif %}

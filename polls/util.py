@@ -10,7 +10,8 @@ def dictGet(hashMap, key):
         return hashMap[key]
     except KeyError:
         return ""
-def mail(to, subject, body):
+def sendMail(to, subject, body):
+    print(to, subject, body)
     if not to or not subject or not body:
         return False
     try:

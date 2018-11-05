@@ -1,6 +1,7 @@
 from polls.models import Votes1, Voters, TokenID
 from hashlib import sha256
-from polls.globals import secretHash
+from polls.globals import secretHash,emailTemplates
+from polls.util import sendMail
 
 
 def storeVote(request):
@@ -17,16 +18,19 @@ def storeVote(request):
 		tokenID = token[:5]
 
 		voteJSON = str(request.POST)
+		signature = genSignature(tokenID, voteJSON)
+		
 		# Add vote to database
 		v = Votes1(tokenID=tokenID)
 		v.voteJSON = voteJSON
+		v.signature = signature
 		v.save()
 
 		# Mark token as used, mark user as voted
 		markTokenUsed(tokenID)
 		markVoted(voterID)
 
-		signature = genSignature(tokenID, voteJSON)
+		sendMail(request.session['webmail'] or '' ,"Vote Verification Signature", emailTemplates['voteSignature'])
 		return {'status': True, 'data': signature}
 	
 	except TokenID.DoesNotExist as e:

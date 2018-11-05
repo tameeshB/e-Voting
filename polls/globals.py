@@ -17,4 +17,9 @@ globals = {
         'pass' : ' '
     }
 }
+emailTemplates = {
+    'voteSignature' : """
+        Hi!
+    """
+}
 setDuringInit = ['hostels','gender']

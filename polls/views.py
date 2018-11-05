@@ -23,6 +23,7 @@ def verify(request):
     hideTextBox = False
     if request.POST:
         verifySignatureResult = auth.getVerifySignature(request.POST.get('token',''))
+        print(verifySignatureResult)
         messages.add_message(
             request, messages.INFO if verifySignatureResult['status'] else messages.ERROR,
             verifySignatureResult['data']
@@ -75,6 +76,7 @@ def login(request):
             if authResult == True:
                 request.session['token'] = request.POST.get('token','')
                 request.session['rollno'] = request.POST.get('name','') # @todo: rollno
+                request.session['webmail'] = request.POST.get('webmail','')
                 # @initparams
                 bucketProcess = bucket.process(request.POST.get('name',''),request.session['init']['hostels'],request.session['init']['gender'])
 
