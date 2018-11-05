@@ -11,7 +11,6 @@ def authenticate(rollNo, password, token):
     tokenID = token[:5]
     if TokenID.objects.get(tokenID=tokenID).used:
         return 'Token already used!'
-
     return True
 
 
@@ -25,6 +24,7 @@ def valToken(token):
         return False
     
     return True
+
 
 def markTokenUsed(token):
     tokenID = token[:6]

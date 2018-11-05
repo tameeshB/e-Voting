@@ -89,7 +89,7 @@ def vote(request):
         messages.add_message(request, messages.ERROR, 'Please log-in before voting.')
         return HttpResponseRedirect(reverse('polls:login'))
     if request.POST:
-        voteResult = votelib.storeVote(request.POST)
+        voteResult = votelib.storeVote(request)
         if voteResult['status']:
             messages.add_message(request, messages.SUCCESS, 'Thanks for voting!!')
             messages.add_message(request, messages.INFO, 'Your verification code is {} .'.format(voteResult['data']))

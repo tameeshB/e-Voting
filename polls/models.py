@@ -43,7 +43,7 @@ class Candidate(models.Model):
         return self.name
 
 
-class votes1(models.Model):
+class Votes1(models.Model):
     tokenID = models.CharField(max_length=5,primary_key=True)
     voteJSON = models.CharField(max_length=1000)
     signature = models.CharField(max_length=100)
@@ -71,6 +71,7 @@ class TokenNo(models.Model):
         TokenNo.objects.all().delete()
 
 class TokenDash(TokenNo):
+    pass
     class Meta:
         proxy = True
         verbose_name = 'Token Dashboard'
