@@ -9,7 +9,7 @@ globals = {
     'course' : (('B', 'BTech'), ('M', 'MTech'), ('P', 'Phd')),
     'user' : False, # remove
     'messages' : [],
-    'positions' : []
+    'positions' : [],
     'smtp':{
         'host':'mail.iitp.ac.in',
         'port': 587,

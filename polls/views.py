@@ -18,6 +18,22 @@ def index(request):
     context.update({'messages': messages.get_messages(request),'next':'index'})
     return render(request, 'polls/index.html', context)
 
+
+def verify(request):
+    hideTextBox = False
+    if request.POST:
+        verifySignatureResult = auth.getVerifySignature(request.POST.get('token',''))
+        messages.add_message(
+            request, messages.INFO if verifySignatureResult['status'] else messages.ERROR,
+            verifySignatureResult['data']
+        )
+        if verifySignatureResult['status']:
+            hideTextBox = True
+    context = globals.globals.copy()
+    context.update({'messages': messages.get_messages(request),'next':'verify','hideTextBox':hideTextBox})
+    return render(request, 'polls/index.html', context)
+
+
 def init(request):
     messageList = []
     # print(type(request.POST['name']))

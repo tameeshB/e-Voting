@@ -102,8 +102,12 @@
 									{% endfor %}
 									
 								{% endif %}
-								<form method="post" action="{% url 'polls:login' %}">
+
+								<form method="post" action="{% url 'polls:verify' %}">
 									{% csrf_token %}
+									{% if hideTextBox %}
+									
+									{% else %}
 									<div class="fields">
 										<div class="field">
 											<label for="token">One Time Token:</label>
@@ -115,6 +119,7 @@
 										<li><input type="submit" value="Login" class="primary" /></li>
 										<li><input type="reset" value="Reset" /></li>
 									</ul>
+									{% endif %}
 								</form>
 								</b>
 							</article>
