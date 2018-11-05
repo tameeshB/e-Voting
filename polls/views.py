@@ -52,15 +52,15 @@ def login(request):
         return HttpResponseRedirect(reverse('polls:init'))
     messageList = []
     if request.POST:
-        print(request.POST)
+        # print(request.POST)
         try:
             # Attempt authentication
-            authResult =  auth.authenticate(request.POST['name'],request.POST['password'],request.POST['token'])
+            authResult =  auth.authenticate(request.POST.get('name',''),request.POST.get('password',''),request.POST.get('token',''))
             if authResult == True:
-                request.session['token'] = request.POST['token']
-                request.session['rollno'] = request.POST['name'] # @todo: rollno
+                request.session['token'] = request.POST.get('token','')
+                request.session['rollno'] = request.POST.get('name','') # @todo: rollno
                 # @initparams
-                bucketProcess = bucket.process(request.POST['name'],request.session['init']['hostels'],request.session['init']['gender'])
+                bucketProcess = bucket.process(request.POST.get('name',''),request.session['init']['hostels'],request.session['init']['gender'])
 
                 if not bucketProcess['status']:
                     messageList.append(bucketProcess['data'])
