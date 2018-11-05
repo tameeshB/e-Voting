@@ -19,7 +19,13 @@
 	<body class="is-preload">
 		<!-- Wrapper -->
 			<div id="wrapper">
-
+				<script>
+					{% if next == "login" %}
+						window.location = '#login';
+					{% elif next == "verify" %}
+						window.location = '#verify';
+					{% endif %}
+				</script>
 				<!-- Header -->
 					<header id="header">
 						<div class="logo">
@@ -49,16 +55,6 @@
 							</ul>
 						</nav>
 					</header>
-				
-				{% if next %}
-					<script>
-						{% if next == "login" %}
-							window.location = '#login';
-						{% elif next == "verify" %}
-							window.location = '#verify';
-						{% endif %}
-					</script>
-				{% endif %}
 				<!-- Main -->
 					<div id="main">
 						<article id="login">

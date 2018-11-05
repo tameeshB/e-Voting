@@ -1,5 +1,5 @@
 from django.db import models
-
+from polls.globals import globals
 # Create your models here.
 class Voters(models.Model):
     voterID = models.CharField(max_length=200,primary_key=True) # is roll No.
@@ -14,10 +14,10 @@ class Voters(models.Model):
 class Bucket(models.Model):
     bucketName = models.CharField(max_length=200,null=False)
     # rollnoRegex = models.CharField(max_length=200,null=False)
-    gender = models.CharField(max_length=1, choices=(('F', 'Female'), ('M', 'Male')))
-    hostel = models.CharField(max_length=3, choices=(('BH1', 'Boys-Hostel1'), ('GH1', 'Girls-Hostel1')))
-    year = models.IntegerField(choices=((0, 'All'),(15, '15'), (16, '16'), (17, '17'), (18, '18')))
-    course = models.CharField(max_length=1, choices=(('B', 'BTech'), ('M', 'MTech'), ('P', 'Phd')))
+    gender = models.CharField(max_length=1, choices=globals['gender'])
+    hostel = models.CharField(max_length=3, choices=globals['hostels'])
+    year = models.IntegerField(choices=globals['year'])
+    course = models.CharField(max_length=1, choices=globals['course'])
 
     def __str__(self):
         return self.bucketName

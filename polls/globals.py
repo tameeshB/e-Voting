@@ -1,28 +1,14 @@
 secretHash = ''
+clientKey = 'a'
 globals = {
     'electionName' : 'Gymkhana Elections 2018',
     'hasBegun' : True,
-    'user' : False,
+    'hostels' : (('BH1', 'Boys-Hostel1'), ('GH1', 'Girls-Hostel1')),
+    'gender' : (('F', 'Female'), ('M', 'Male')),
+    'year' : ((0, 'All'),(15, '15'), (16, '16'), (17, '17'), (18, '18')),
+    'course' : (('B', 'BTech'), ('M', 'MTech'), ('P', 'Phd')),
+    'user' : False, # remove
     'messages' : [],
-    'positions' : [
-       
-    ]
+    'positions' : []
 }
-#  {
-#             'posName':'VP',
-#             'posID' : 'vp',
-#             'candidates':[
-#                 {'id':'1601CS20','name':'Parth Kulkarni','agendaURL':'https://facebook.com'},
-#                 {'id':'1601CS21','name':'Manish Kumar','agendaURL':'https://facebook.com'},
-#                 {'id':'1601CS22','name':'Mayank Vaidya','agendaURL':'https://facebook.com'}
-#             ]
-#         },
-#         {
-#             'posName':'TechSec',
-#             'posID' : 'techsec',
-#             'candidates':[
-#                 {'id':'1601CS20','name':'Parth Kulkarni','agendaURL':'https://facebook.com'},
-#                 {'id':'1601CS21','name':'Manish Kumar','agendaURL':'https://facebook.com'},
-#                 {'id':'1601CS22','name':'Mayank Vaidya','agendaURL':'https://facebook.com'}
-#             ]
-#         }
+setDuringInit = ['hostels','gender']

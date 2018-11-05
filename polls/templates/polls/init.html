@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		{% load static %}
+		<title>e-Voting portal | {{electionName}} </title>
+		<meta charset="utf-8" />
+		<meta name="theme-color" content="#1d1c23">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" type="image/png" href="{% static 'polls/images/logo.png' %}" />
+		<link rel="stylesheet" href="{% static 'polls/css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'polls/css/noscript.css' %}" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<!-- <span class="icon fa-diamond"></span> -->
+							<img src="{% static 'polls/images/logo.png' %}" alt="" height="68" width="68" style="opacity:0.4;transform: translateY(15%)">
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>e-Voting</h1>
+							<b>
+							{% if messages and next == 'init' %}
+								{% for message in messages %}
+								<code id="error">{{ message }}</code><br>
+								{% endfor %}
+								<hr>
+							{% endif %}
+							<form method="post" action="{% url 'polls:init' %}">
+								{% csrf_token %}
+								<div class="fields">
+									{% for var in variables %}
+									<!-- {{ var }} -->
+									<div class="field">
+										<label for="demo-category">{{var.sname}}</label>
+										{% for option in var.options %}
+										<div class="field half">
+											<input type="radio" id="{{var.name}}_{{option.id}}" name="{{var.name}}" value="{{option.id}}">
+											<label for="{{var.name}}_{{option.id}}"> {{option.name}}</label>
+										</div>
+										{% endfor %}
+									</div>
+									{% endfor %}
+									<div class="field">
+											<label for="clientKey">Client Key</label>
+											<input type="password" name="clientKey" id="clientKey" required/>
+										</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Initialise" class="primary" /></li>
+									<li><input type="reset" value="Reset" /></li>
+								</ul>
+							</form>
+							</b>
+							</div>
+						</div>
+					</header>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<!-- <p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p> -->
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="{% static 'polls/css/noscript.css' %}"></script>
+			<script src="{% static 'polls/js/browser.min.js' %}"></script>
+			<script src="{% static 'polls/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'polls/js/util.js' %}"></script>
+			<script src="{% static 'polls/js/main.js' %}"></script>
+
+	</body>
+</html>

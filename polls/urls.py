@@ -10,7 +10,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('vote/', views.vote, name='vote'),
-    # path('init/', views.vote, name='vote'),
+    path('init/', views.init, name='init'),
     # path('/verify', views.verify, name='verify'),
     # path('/thanks', views.thanks, name='thanks'),
 ]

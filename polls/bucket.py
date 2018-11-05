@@ -1,5 +1,6 @@
 from polls.models import Bucket,Candidate,Positions
 def process(rollNo, hostel, gender):
+    print(rollNo, hostel, gender)
     course = {
         '0':'B',
         '1':'M',
@@ -10,7 +11,7 @@ def process(rollNo, hostel, gender):
     if len(matchingBuckets)==1:
         return {'status':True,'data':matchingBuckets[0].id}
     else:
-        return {'status':False,'data':'Invalid Roll No.'}
+        return {'status':False,'data':'No buckets found.'}
 def fetchPositions(bucketID):
     # 'positions' : [
     #     {
