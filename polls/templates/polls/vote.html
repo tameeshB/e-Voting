@@ -30,16 +30,12 @@
 						<div class="content">
 							<div class="inner">
 								<h1>e-Voting</h1>
+								<b>
 								<p>Hi! {{user}}!<br>
 									You can view Contenders for the {{electionName}} by clicking on "Contenders" tab below.<br>
 									Please proceed to voting for your candidates for the {{electionName}}.<br>
-									{% if hasBegun %}
-										Make sure to vote in {{hoursUntilEnd}} hours.
-									{% else %}
-										{{hoursUntilEnd}} hours to elections.
-									{% endif %}
 								</p>
-								
+								</b>
 							</div>
 						</div>
 						<nav>
@@ -56,6 +52,7 @@
 						<!-- Intro -->
 						<article id="contenders">
 								<h2 class="major">Contenders</h2>
+								<b>
 								{% for position in positions %}
 								<section>
 									<h3>{{position.posName}}</h3>
@@ -66,9 +63,11 @@
 									<hr />
 								</section>
 								{% endfor %}
+								</b>
 						</article>
 						<article id="vote">
 							<h2 class="major">Vote</h2>
+							<b>
 							<form method="post" action="#">
 								<div class="fields">
 									{% for position in positions %}
@@ -96,6 +95,7 @@
 									<li><input type="reset" value="Reset" /></li>
 								</ul>
 							</form>
+							</b>
 						</article>
 					</div>
 
