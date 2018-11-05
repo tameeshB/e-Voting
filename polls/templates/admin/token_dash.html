@@ -1,8 +1,43 @@
 {% extends "admin/change_list.html" %}
 {% block content_title %}
-    <h1> Sales Summary </h1>
+    <h1> Token-List </h1>
 {% endblock %}
+
 {% block result_list %}
-    Our content goes here…
+<div class=”results”>
+        <table>
+            
+        <thead>
+          <tr>
+            <th>
+              <div class=”text”>
+                <a href=”#”>{{ noOfTokens }} One-Time Tokens</a>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody><!-- @todo: Multiple per row -->
+          {% for token in tokens %}
+          <tr class=”{% cycle 'row1' 'row2' %}”>
+            <td> {{ token }} </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+<style>
+td{
+    padding:50px !important;
+    font-weight: bold;
+    text-align: center;
+}
+th{
+    text-align: center;
+}
+</style>
+<script>
+    a = document.getElementsByClassName('addlink')[0]
+    a.innerHTML = "Generate More Tokens"
+</script>
 {% endblock %}
 {% block pagination %}{% endblock %}

@@ -6,6 +6,7 @@ from django.conf.urls import url
 
 from .models import Positions,Candidate,Bucket,TokenDash,TokenNo
 from . import views
+from polls.auth import getUnusedTokens
 
 admin.site.register(Positions)
 admin.site.register(Bucket)
@@ -18,23 +19,19 @@ class CandidateAdmin(admin.ModelAdmin):
 @admin.register(TokenDash)
 class TokenDashAdmin(admin.ModelAdmin):
     change_list_template = 'admin/token_dash.html'
-    add_url = ''
-    # date_hierarchy = 'created'
-    # def changelist_view(self, request, extra_context=None):
-    #     response = super().changelist_view(
-    #         request,
-    #         extra_context=extra_context,
-    #     )
-    #     try:
-    #         query = TokenNo.objects.filter()
-    #     except (AttributeError, KeyError):
-    #         return response
-    #     response.context_data['summary'] = list(
-    #         qs
-    #         .values('sale__category__name')
-    #         .annotate(**metrics)
-    #         .order_by('-total_sales')
-    #     )
+
+    def changelist_view(self, request, extra_context=None):
+        response = super().changelist_view(
+            request,
+            extra_context=extra_context,
+        )
+        tokens = []
+        try:
+            tokens = getUnusedTokens()
+        except (AttributeError, KeyError):
+            return response
+        response.context_data['tokens'] = tokens
+        response.context_data['noOfTokens'] = len(tokens)
         
-    #     return response
+        return response
 

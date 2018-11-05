@@ -49,4 +49,11 @@ def genToken():
             break
     t = TokenID(tokenID=tokenID)
     t.save()
+    return getTokenHashString(tokenID)
+    
+def getTokenHashString(tokenID):
     return str(tokenID)+sha256((str(tokenID)+secretHash).encode('utf-8')).hexdigest()[:5]
+
+def getUnusedTokens():
+    tokenIDs = [ getTokenHashString(token.tokenID) for token in TokenID.objects.filter(used=False)] # @todo: assigned + used
+    return tokenIDs

@@ -64,7 +64,7 @@ class TokenNo(models.Model):
         if self.pk is not None:
             orig = TokenNo.objects.get(pk=self.pk)
         for i in range(self.tokenNo):
-            genToken() #optimise
+            genToken() # @todo: optimise
         super(TokenNo, self).save()
         TokenNo.objects.all().delete()
 
