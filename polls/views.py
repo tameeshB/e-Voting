@@ -11,8 +11,9 @@ import polls.bucket as bucket
 
 # Create your views here.
 def index(request):
-    template = loader.get_template('polls/index.html')
-    return HttpResponse(template.render(globals.globals, request))
+    context = globals.globals.copy()
+    context.update({'messages': messages.get_messages(request),'next':'index'})
+    return render(request, 'polls/index.html', context)
 
 def login(request):
     print(request.POST)
@@ -42,7 +43,7 @@ def login(request):
     context = {}
     context.update(globals.globals)
     messageList.extend(messages.get_messages(request))
-    context.update({'messages': messageList})
+    context.update({'messages': messageList,'next':'login'})
     
     return render(request, 'polls/index.html', context)
 
@@ -57,3 +58,12 @@ def vote(request):
     context.update({'positions': positionList,'user':request.session['rollno']})
     print(positionList)
     return render(request, 'polls/vote.html', context)
+
+
+
+def logout(request):
+    messages.add_message(request, messages.INFO, 'Successfully logged out.')
+    del request.session['token']
+    del request.session['rollno']
+    del request.session['bucket']
+    return HttpResponseRedirect(reverse('polls:index'))

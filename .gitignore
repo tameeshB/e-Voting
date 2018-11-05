@@ -86,4 +86,4 @@ local_settings.py
 .env
 db.sqlite3
 
-.vscode/
+.vscode/polls/migrations/__pycache__/
