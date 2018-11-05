@@ -11,7 +11,7 @@ def storeVote(request):
 		token = request.session['token']
 		voterID = request.session['rollno'].lower()
 		
-		if len(Voters.objects.filter(voterID=voterID)) > 0:
+		if hasVoted(voterID):
 			return {'status': False, 'data': 'User {} has already voted!'.format(voterID)}
 
 		tokenID = token[:5]
@@ -32,6 +32,9 @@ def storeVote(request):
 	except TokenID.DoesNotExist as e:
 		return {'status': False, 'data': 'Invalid Token! Vote not recorded!'}
 
+
+def hasVoted(voterID):
+	return len(Voters.objects.filter(voterID=voterID)) > 0
 
 
 def markTokenUsed(tokenID):
