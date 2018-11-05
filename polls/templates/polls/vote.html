@@ -65,10 +65,25 @@
 								{% endfor %}
 								</b>
 						</article>
+						{% if next %}
+							<script>
+								{% if next == "vote" %}
+									window.location = '#vote';
+								{% endif %}
+							</script>
+						{% endif %}
 						<article id="vote">
 							<h2 class="major">Vote</h2>
 							<b>
-							<form method="post" action="#">
+							{% if messages and next == 'vote' %}
+								{% for message in messages %}
+								<code id="error">{{ message }}</code><br>
+								{% endfor %}
+								<hr>
+							{% endif %}
+
+							<form method="post" action="{% url 'polls:vote' %}">
+								{% csrf_token %}
 								<div class="fields">
 									{% for position in positions %}
 									<div class="field">

@@ -24,7 +24,8 @@ class Bucket(models.Model):
 
 
 class Positions(models.Model):
-    posID = models.CharField(max_length=200,primary_key=True) # concat noormalised string unique for position
+    # @todo: posID - auto generate
+    posID = models.CharField(max_length=200,primary_key=True) # concat normalised string unique for position
     buckets = models.ManyToManyField(Bucket)
     posName = models.CharField(max_length=200)
     def __str__(self):
@@ -43,13 +44,14 @@ class Candidate(models.Model):
 
 
 class votes1(models.Model):
-    batch = models.CharField(max_length=15) # batch
+    tokenID = models.CharField(max_length=5,primary_key=True)
     voteJSON = models.CharField(max_length=1000)
+    signature = models.CharField(max_length=100)
 
 
-class votes2(models.Model):
-    batch = models.CharField(max_length=15) # batch
-    voteJSON = models.CharField(max_length=1000)
+# class votes2(models.Model):
+#     batch = models.CharField(max_length=15) # batch
+#     voteJSON = models.CharField(max_length=1000)
 
 
 class TokenID(models.Model):

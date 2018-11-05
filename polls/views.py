@@ -8,6 +8,7 @@ import polls.auth as auth
 import polls.util as util
 import polls.globals as globals
 import polls.bucket as bucket
+import polls.vote as votelib
 
 # Create your views here.
 def index(request):
@@ -49,14 +50,24 @@ def login(request):
 
 def vote(request):
     # Not authenticated
+    messageList = []
     if 'token' not in request.session.keys() and 'rollno' not in request.session.keys():
         messages.add_message(request, messages.ERROR, 'Please log-in before voting.')
         return HttpResponseRedirect(reverse('polls:login'))
+    if request.POST:
+        voteResult = votelib.storeVote(request.POST)
+        if voteResult['status']:
+            messages.add_message(request, messages.SUCCESS, 'Thanks for voting!!')
+            messages.add_message(request, messages.INFO, 'Your verification code is {} .'.format(voteResult['data']))
+            return HttpResponseRedirect(reverse('polls:logout'))
+        else:
+            messageList.append(voteResult['data'])
+
     positionList = bucket.fetchPositions(request.session['bucket'])
     context = {}
     context.update(globals.globals)
     context.update({'positions': positionList,'user':request.session['rollno']})
-    print(positionList)
+    context.update({'messages': messageList,'next':'vote'})
     return render(request, 'polls/vote.html', context)
 
 
