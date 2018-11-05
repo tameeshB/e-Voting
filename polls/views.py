@@ -12,6 +12,8 @@ import polls.vote as votelib
 
 # Create your views here.
 def index(request):
+    if 'init' not in request.session or any([ var not in request.session['init'] for var in globals.setDuringInit]):
+        return HttpResponseRedirect(reverse('polls:init'))
     if 'token' in request.session.keys() or 'rollno' in request.session.keys():
         return HttpResponseRedirect(reverse('polls:logout'))
     context = globals.globals.copy()

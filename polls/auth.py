@@ -1,14 +1,20 @@
 from polls.globals import secretHash
 from hashlib import sha256
 from random import randint
-from .models import TokenID,Voters,Votes1
+from polls.models import TokenID, Voters, Votes1
+import polls.vote as votelib
+
 # [5 digits][sha256 hash of that number]
 def authenticate(rollNo, password, token):
+
+    if votelib.hasVoted(rollNo):
+        return 'Voter {} has already voted!'.format(rollNo)
 
     if not valToken(token):
         return 'Invalid Token!'
 
     tokenID = token[:5]
+    
     if TokenID.objects.get(tokenID=tokenID).used:
         return 'Token already used!'
     userHasVotedResult = Voters.objects.filter(voterID=rollNo)
