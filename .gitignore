@@ -87,3 +87,4 @@ local_settings.py
 db.sqlite3
 
 .vscode/polls/migrations/__pycache__/
+staticfiles
