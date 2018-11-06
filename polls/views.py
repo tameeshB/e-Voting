@@ -13,12 +13,21 @@ import polls.vote as votelib
 # Create your views here.
 def index(request):
     noInit = False
+    showResults = False
+
     if 'init' not in request.session or any([ var not in request.session['init'] for var in globals.setDuringInit]):
         noInit = True
+    # Replace with logic for checking if election is over
+    if False:
+        showResults = True
+        positionList = bucket.fetchPositions(None)
+
     if 'token' in request.session.keys() or 'rollno' in request.session.keys():
         return HttpResponseRedirect(reverse('polls:logout'))
     context = globals.globals.copy()
-    context.update({'messages': messages.get_messages(request),'next':'index','noInit':noInit})
+    context.update({'messages': messages.get_messages(request),'next':'index','noInit':noInit,'showResults':showResults})
+    if showResults:
+        context.update({'positions':positionList})
     return render(request, 'polls/index.html', context)
 
 
