@@ -159,7 +159,28 @@
 									{% endif %}
 								</form>
 								</b>
-							</article>
+						</article>
+						<article id="results">
+								<h2 class="major">Results</h2>
+								<b>
+								{% for position in positions %}
+								<section>
+									<h3>{{position.posName}}</h3>
+									<!--<hr />-->
+									<table style="width:100%">
+									{% for candidate in position.candidates %}
+										<tr>
+											<td style="width: 80%">{{candidate.name}} : <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a></td>
+											<td>{{candidate.votes}} votes</td>
+										</tr>
+									{% endfor %}
+									</table>
+									<!--<hr />-->
+								</section>
+								{% endfor %}
+								</b>
+						</article>
+
 					</div>
 
 				<!-- Footer -->
