@@ -50,7 +50,11 @@
 						</div>
 						<nav>
 							<ul>
+								{% if noInit == True %}
+								<li><a href="{% url 'polls:init' %}">Init</a></li>
+								{% else %}
 								<li><a href="#login">Login</a></li>
+								{% endif %}
 								<li><a href="#verify">Verify Vote</a></li>
 							</ul>
 						</nav>

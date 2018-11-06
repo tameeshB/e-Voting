@@ -12,12 +12,13 @@ import polls.vote as votelib
 
 # Create your views here.
 def index(request):
+    noInit = False
     if 'init' not in request.session or any([ var not in request.session['init'] for var in globals.setDuringInit]):
-        return HttpResponseRedirect(reverse('polls:init'))
+        noInit = True
     if 'token' in request.session.keys() or 'rollno' in request.session.keys():
         return HttpResponseRedirect(reverse('polls:logout'))
     context = globals.globals.copy()
-    context.update({'messages': messages.get_messages(request),'next':'index'})
+    context.update({'messages': messages.get_messages(request),'next':'index','noInit':noInit})
     return render(request, 'polls/index.html', context)
 
 
