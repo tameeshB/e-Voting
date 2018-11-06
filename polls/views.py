@@ -9,6 +9,7 @@ import polls.util as util
 import polls.globals as globals
 import polls.bucket as bucket
 import polls.vote as votelib
+import polls.models as models
 
 # Create your views here.
 def index(request):
@@ -18,7 +19,14 @@ def index(request):
     if 'token' in request.session.keys() or 'rollno' in request.session.keys():
         return HttpResponseRedirect(reverse('polls:logout'))
     context = globals.globals.copy()
-    context.update({'messages': messages.get_messages(request),'next':'index','noInit':noInit})
+    try:
+        ongoingVal = models.ConfigVars.objects.get(varKey='ongoing').varVal
+        publishedVal = models.ConfigVars.objects.get(varKey='publish').varVal
+    except models.ConfigVars.DoesNotExist as e:
+        util.initConfigTable()
+        return HttpResponseRedirect(reverse('polls:index'))
+    positionList = bucket.fetchPositions(None) # @todo: conditional
+    context.update({'messages': messages.get_messages(request),'next':'index','noInit':noInit,'published':publishedVal, 'ongoing': ongoingVal, 'positions':positionList})
     return render(request, 'polls/index.html', context)
 
 
@@ -70,6 +78,9 @@ def login(request):
     # checks if initialisation is done and all required init variables are set.
     if 'init' not in request.session or any([ var not in request.session['init'] for var in globals.setDuringInit]):
         return HttpResponseRedirect(reverse('polls:init'))
+    
+    redirectIfNotOngoing(request)
+    
     messageList = []
     if request.POST:
         # print(request.POST)
@@ -105,6 +116,9 @@ def login(request):
 
 
 def vote(request):
+
+    redirectIfNotOngoing(request)
+
     # Not authenticated
     messageList = []
     if 'token' not in request.session.keys() and 'rollno' not in request.session.keys():
@@ -134,3 +148,13 @@ def logout(request):
         if sessionVar in request.session:
             del request.session[sessionVar]
     return HttpResponseRedirect(reverse('polls:index'))
+
+def redirectIfNotOngoing(request):
+    try:
+        ongoingVal = models.ConfigVars.objects.get(varKey='ongoing').varVal
+    except models.ConfigVars.DoesNotExist as e:
+        util.initConfigTable()
+        return HttpResponseRedirect(reverse('polls:login'))
+    if ongoingVal == 0:
+        messages.add_message(request, messages.INFO, 'The poll is not in progress, logging-in. You can not log-in or vote now.')
+        return HttpResponseRedirect(reverse('polls:index'))

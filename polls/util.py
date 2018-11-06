@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from polls.globals import globals
+from polls.models import ConfigVars
 
 def dictGet(hashMap, key):
     try:
@@ -38,3 +39,12 @@ def sendMail(to, subject, body, html=""):
         return True
     except:
         return False
+
+def initConfigTable():
+    nConfigVars = len(ConfigVars.objects.filter())
+    if nConfigVars < 2:
+        ConfigVars.objects.all().delete()
+        ongoing = ConfigVars(varKey='ongoing')
+        ongoing.save()
+        publish = ConfigVars(varKey='publish')
+        publish.save()

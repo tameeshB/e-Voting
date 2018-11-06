@@ -70,7 +70,7 @@ def genNTokens(n, ret_tokens=False):
     unallotted_ids = set(range(10000,100000)) - allotted_ids
     new_tokenIDs = sample(unallotted_ids, n)
 
-    for tokenID in new_tokenIDs:
+    for tokenID in new_tokenIDs: # @todo: without loop
         t = TokenID(tokenID=tokenID)
         t.save()
 

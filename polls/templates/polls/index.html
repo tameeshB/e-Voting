@@ -15,6 +15,13 @@
 		<link rel="icon" type="image/png" href="{% static 'polls/images/logo.png' %}" />
 		<link rel="stylesheet" href="{% static 'polls/css/main.css' %}" />
 		<noscript><link rel="stylesheet" href="{% static 'polls/css/noscript.css' %}" /></noscript>
+		<style>
+		.first{
+			/* text-decoration: underline; */
+			font-size: 12pt;
+			color: #7fe888;
+		}
+		</style>
 	</head>
 	<body class="is-preload">
 		<!-- Wrapper -->
@@ -22,6 +29,8 @@
 				<script>
 					{% if next == "login" %}
 						window.location = '#login';
+					{% elif next == "results" %}
+						window.location = '#results';
 					{% elif next == "verify" %}
 						window.location = '#verify';
 					{% endif %}
@@ -50,10 +59,12 @@
 						</div>
 						<nav>
 							<ul>
-								{% if noInit == True %}
+								{% if noInit == True and published == False %}
 								<li><a href="{% url 'polls:init' %}">Init</a></li>
-								{% else %}
+								{% elif published == False or ongoing == True %}
 								<li><a href="#login">Login</a></li>
+								{% elif published == True %}
+								<li><a href="#results">Results</a></li>
 								{% endif %}
 								<li><a href="#verify">Verify Vote</a></li>
 							</ul>
@@ -99,6 +110,23 @@
 							</form>
 							</b>
 						</article>
+						{% if published == True %}
+						<article id="results">
+							<h2 class="major">Results</h2>
+							<b>
+							{% for position in positions %}
+							<section>
+								<h3>{{position.posName}}</h3>
+								<hr />
+								{% for candidate in position.candidates %}
+									<h4 class="{% if forloop.first %}first{% endif %}">{{candidate.name}} : {{candidate.votes}} Votes</h2>
+								{% endfor %}
+								<hr />
+							</section>
+							{% endfor %}
+							</b>
+						</article>
+						{% endif %}
 						<article id="verify">
 								<h2 class="major">Verify</h2>
 								<b>

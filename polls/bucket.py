@@ -43,7 +43,7 @@ def fetchPositions(bucketID):
     positionList = []
     for i,position in enumerate(positions):
         posDict = position.copy()
-        posDict['candidates'] = list(Candidate.objects.filter(position__posID=position['posID']).values())
+        posDict['candidates'] = list(Candidate.objects.filter(position__posID=position['posID']).order_by('-votes').values())
         positionList.append(posDict)
     
     return positionList

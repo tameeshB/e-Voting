@@ -1,0 +1,76 @@
+{% extends 'admin/change_list.html' %}
+
+{% block object-tools %}
+    <div>
+        <form action="start/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Start Poll</button>
+        </form>
+        <form action="stop/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Stop Poll</button>
+        </form>
+        <form action="publishResults/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Tally and Publish Results</button>
+        </form>
+        <form action="unpublish/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Unpublish Results</button>
+        </form>
+    </div>
+    <br />
+{% endblock %}
+
+{% block result_list %}
+{% if published == True %}
+<div class="results">
+    <table>
+        
+    <thead>
+      <tr>
+        <th>
+          <div class="text">
+            <a href="#"> Position </a>
+          </div>
+        </th>
+        <th>
+            <div class="text">
+              <a href="#"> Candidate Name </a>
+            </div>
+        </th>
+        <th>
+            <div class="text">
+              <a href="#"> No. of Votes </a>
+            </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {%  for position in positions %}
+            <tr class="" style="background-color: #dedede82">
+                <td colspan="3" align="center" > {{ position.posName }} </td>
+            </tr>
+        {% for candidate in position.candidates %}
+            <tr class="{% if forloop.first %}first{% endif %}"> 
+                <td> {{ position.posName }} </td>
+                <td> {{ candidate.name }} </td>
+                <td> {{ candidate.votes }} </td>
+            </tr>
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+    <!-- @todo: Case of a tie in votes -->
+  </table>
+</div>
+<style>
+.first{
+    background-color: #b5f7e5b5;
+}
+</style>
+{% endif %}
+{% endblock %}
+
+{% block pagination %}
+    {{ status }}
+{% endblock %}
