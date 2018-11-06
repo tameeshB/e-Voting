@@ -7,14 +7,18 @@ import polls.vote as votelib
 # [5 digits][sha256 hash of that number]
 def authenticate(rollNo, password, token):
 
+    # Password check first (left to be implemented)
+    # Double voting
     if votelib.hasVoted(rollNo):
         return 'Voter {} has already voted!'.format(rollNo)
 
+    # Token validation
     if not valToken(token):
         return 'Invalid Token!'
 
     tokenID = token[:5]
     
+    # Token verification
     if TokenID.objects.get(tokenID=tokenID).used:
         return 'Token already used!'
     userHasVotedResult = Voters.objects.filter(voterID=rollNo)

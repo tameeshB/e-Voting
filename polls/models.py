@@ -4,7 +4,6 @@ from polls.globals import globals
 class Voters(models.Model):
     voterID = models.CharField(max_length=200,primary_key=True) # is roll No.
     hasVoted = models.BooleanField(default=False)
-    #TODO: add bucket
     def __str__(self):
         return self.voterID
     def __rep__(self):
@@ -40,7 +39,7 @@ class Candidate(models.Model):
     agendaURL = models.CharField(max_length=1000,null=True)
     position = models.ForeignKey(Positions, on_delete=models.CASCADE) # candidate is also a voter. 
     def __str__(self):
-        return self.name
+        return str(self.name) + ':' + str(self.position)
 
 
 class Votes1(models.Model):

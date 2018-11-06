@@ -14,6 +14,7 @@ def process(rollNo, hostel, gender):
     else:
         return {'status':False,'data':'No buckets found.'}
 
+# Pass bucketID=None for obtaining all positions
 def fetchPositions(bucketID):
     # 'positions' : [
     #     {
@@ -35,7 +36,10 @@ def fetchPositions(bucketID):
     #         ]
     #     }
     # ]
-    positions = Positions.objects.filter(buckets__id=bucketID).values()
+    if bucketID is None:
+        positions = Positions.objects.values()
+    else:
+        positions = Positions.objects.filter(buckets__id=bucketID).values()
     positionList = []
     for i,position in enumerate(positions):
         posDict = position.copy()
