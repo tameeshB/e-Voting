@@ -1,6 +1,9 @@
 from django.db import models
+
 from polls.globals import globals
 # Create your models here.
+
+
 class Voters(models.Model):
     voterID = models.CharField(max_length=200,primary_key=True) # is roll No.
     hasVoted = models.BooleanField(default=False)
@@ -61,13 +64,13 @@ class TokenID(models.Model):
 class TokenNo(models.Model):
     tokenNo = models.IntegerField(default=0)
     def save(self):
-        from polls.auth import genToken
+        from polls.auth import genNTokens
         if self.pk is not None:
             orig = TokenNo.objects.get(pk=self.pk)
-        for i in range(self.tokenNo):
-            genToken() # @todo: optimise
+        genNTokens(self.tokenNo, ret_tokens=False)
         super(TokenNo, self).save()
         TokenNo.objects.all().delete()
+
 
 class TokenDash(TokenNo):
     pass

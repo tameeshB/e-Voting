@@ -1,6 +1,6 @@
 from polls.globals import secretHash
 from hashlib import sha256
-from random import randint
+from random import randint, sample
 from polls.models import TokenID, Voters, Votes1
 import polls.vote as votelib
 
@@ -17,7 +17,7 @@ def authenticate(rollNo, password, token):
         return 'Invalid Token!'
 
     tokenID = token[:5]
-    
+
     # Token verification
     if TokenID.objects.get(tokenID=tokenID).used:
         return 'Token already used!'
@@ -35,7 +35,7 @@ def valToken(token):
     # not present
     if len(TokenID.objects.filter(tokenID=tokenID)) == 0:
         return False
-    
+
     return True
 
 
@@ -63,13 +63,29 @@ def genToken():
     t = TokenID(tokenID=tokenID)
     t.save()
     return getTokenHashString(tokenID)
-    
+
+
+def genNTokens(n, ret_tokens=False):
+    allotted_ids = {int(x) for x in TokenID.objects.values_list('tokenID', flat=True)}
+    unallotted_ids = set(range(10000,100000)) - allotted_ids
+    new_tokenIDs = sample(unallotted_ids, n)
+
+    for tokenID in new_tokenIDs:
+        t = TokenID(tokenID=tokenID)
+        t.save()
+
+    if ret_tokens:
+        tokens = [getTokenHashString(tokenID) for tokenID in new_tokenIDs]
+        return tokens
+
 def getTokenHashString(tokenID):
     return str(tokenID)+sha256((str(tokenID)+secretHash).encode('utf-8')).hexdigest()[:5]
+
 
 def getUnusedTokens():
     tokenIDs = [ getTokenHashString(token.tokenID) for token in TokenID.objects.filter(used=False)] # @todo: assigned + used
     return tokenIDs
+
 
 def getVerifySignature(token):
     if not valToken(token):
