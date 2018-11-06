@@ -14,8 +14,10 @@ import polls.models as models
 # Create your views here.
 def index(request):
     noInit = False
+
     if 'init' not in request.session or any([ var not in request.session['init'] for var in globals.setDuringInit]):
         noInit = True
+
     if 'token' in request.session.keys() or 'rollno' in request.session.keys():
         return HttpResponseRedirect(reverse('polls:logout'))
     context = globals.globals.copy()
