@@ -10,7 +10,7 @@ def dictGet(hashMap, key):
         return hashMap[key]
     except KeyError:
         return ""
-def sendMail(to, subject, body):
+def sendMail(to, subject, body, html=""):
     print(to, subject, body)
     if not to or not subject or not body:
         return False
@@ -24,12 +24,17 @@ def sendMail(to, subject, body):
             os.environ.get('smtp_sender') or globals['smtp']['sender'], 
             os.environ.get('smtp_pass') or globals['smtp']['pass']
         )
-        msg = MIMEMultipart()
+        msg = MIMEMultipart('alternative')
         msg['From']=os.environ.get('smtp_sender') or globals['smtp']['sender']
         msg['To']=to
         msg['Subject']=subject
-        msg.attach(MIMEText(body, 'plain'))
+        plainTextBody = MIMEText(body, 'plain')
+        msg.attach(plainTextBody)
+        if html:
+            htmlBody = MIMEText(html, 'html')
+            msg.attach(htmlBody)
         s.send_message(msg)
+        # s.sendmail(msg['From'], msg['To'], msg.as_string())
         return True
     except:
         return False

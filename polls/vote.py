@@ -1,8 +1,14 @@
-from polls.models import Votes1, Voters, TokenID
+import os
 from hashlib import sha256
+
+from django.shortcuts import render
+from django.template.loader import render_to_string
+
+import evoting.settings
+
+from polls.models import Votes1, Voters, TokenID
 from polls.globals import secretHash,emailTemplates,globals
 from polls.util import sendMail
-
 
 def storeVote(request):
 	# result = {'status': False, 'data': 'Error! Vote not recorded!'}
@@ -29,8 +35,17 @@ def storeVote(request):
 		# Mark token as used, mark user as voted
 		markTokenUsed(tokenID)
 		markVoted(voterID)
-
-		sendMail(request.session['webmail'] or '' ,"Vote Verification Signature", emailTemplates['voteSignature'].format(globals['baseURL'],signature))
+		htmlData = ""
+		templateData = globals.copy()
+		templateData.update({ 'hash' : signature })
+		htmlData = render_to_string('email/verifyToken.html', templateData) 
+		
+		sendMail(
+			request.session['webmail'] or '' ,
+			"Thank you for voting.",
+			emailTemplates['voteSignature'].format(globals['baseURL'],signature),
+			htmlData
+		)
 		return {'status': True, 'data': signature}
 	
 	except TokenID.DoesNotExist as e:
