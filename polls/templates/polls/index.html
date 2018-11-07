@@ -60,13 +60,13 @@
 						<nav>
 							<ul>
 								{% if noInit == True and published == False %}
-								<li><a href="{% url 'polls:init' %}">Init</a></li>
+								<li><a href="{% url 'polls:init' %}" id="initTabBtn">Init</a></li>
 								{% elif published == False or ongoing == True %}
-								<li><a href="#login">Login</a></li>
+								<li><a href="#login" id="loginTabBtn">Login</a></li>
 								{% elif published == True %}
-								<li><a href="#results">Results</a></li>
+								<li><a href="#results" id="resultsTabBtn">Results</a></li>
 								{% endif %}
-								<li><a href="#verify">Verify Vote</a></li>
+								<li><a href="#verify" id="verifyTabBtn">Verify Vote</a></li>
 							</ul>
 						</nav>
 					</header>
