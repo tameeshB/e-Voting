@@ -3,10 +3,16 @@ os:
 language: python
 python:
   - "3.6"
+sudo: required
 env:
   - MOZ_HEADLESS=1
 addons:
   firefox: latest
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 services:
   - mysql
 env:
@@ -14,10 +20,15 @@ env:
 install:
   - pip install -r REQUIREMENTS.txt
 before_script:
-  - wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
-  - mkdir geckodriver
-  - tar -xzf geckodriver-v0.23.0-linux64.tar.gz -C geckodriver
-  - export PATH=$PATH:$PWD/geckodriver
+  - sh -e /etc/init.d/xvfb start
+  - wget https://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - sudo chmod +x chromedriver
+  - ls -l
+  - export webdriver_chrome=$PWD/chromedriver
+  - export PATH=$PATH:$PWD/chromedriver
+  - echo $webdriver_chrome
+  - test -e $webdriver_chrome && echo file exists || echo file not found
   - mysql -e 'create database evoting;' -u root
   - python manage.py makemigrations
   - python manage.py migrate
