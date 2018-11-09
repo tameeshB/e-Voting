@@ -25,7 +25,7 @@ class NewVisitorTest(TestCase):
 
     def tearDown(self):  
         self.driver.quit()
-    
+
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
         self.assertEqual(found.func, polls.views.index)
@@ -45,8 +45,6 @@ class NewVisitorTest(TestCase):
         time.sleep(5)
         self.assertIn('init',self.driver.current_url)
         # self.assertEqual(found.func, polls.views.index)
-
-        
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  
