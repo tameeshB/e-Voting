@@ -1,4 +1,7 @@
 # e-Voting   
+![Travis-CI](https://travis-ci.com/tameeshB/e-Voting.svg?token=yq4nW8BVWTzVvWaLxEXv&branch=master)
+![Django](https://img.shields.io/badge/Django-2.1+-orange.svg)
+![Python](https://img.shields.io/badge/Python-3.5%2B-blue.svg)
 ## apt/brew Dependencies
 1. Python : >=3.5
 2. Chrome : >=68 (for running functional tests)
