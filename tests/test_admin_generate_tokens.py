@@ -12,9 +12,9 @@ import polls.globals as globals
 class AdminGenerateTokens(unittest.TestCase):
     def setUp(self):
         chrome_options = Options()
-        # chrome_options.add_argument('--headless')
-        # chrome_options.add_argument('--no-sandbox')
-        # chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
         chromedriver = os.environ["webdriver_chrome"]
         os.environ["webdriver.chrome.driver"] = chromedriver
         self.driver = webdriver.Chrome(chromedriver,chrome_options=chrome_options)
@@ -52,7 +52,7 @@ class AdminGenerateTokens(unittest.TestCase):
         finalTokenCount = parseNtokens(finalTokenCountString)
         self.assertTrue(initialTokenCount+5 == finalTokenCount)
         
-        token = str(10000)+sha256((str(10000)+globals.secretHash).encode('utf-8')).hexdigest()[:5]
+        # token = str(10000)+sha256((str(10000)+globals.secretHash).encode('utf-8')).hexdigest()[:5]
         
 
 

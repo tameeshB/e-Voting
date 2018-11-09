@@ -11,9 +11,9 @@ import unittest, time, re, os
 class Full(unittest.TestCase):
     def setUp(self):
         chrome_options = Options()
-        # chrome_options.add_argument('--headless')
-        # chrome_options.add_argument('--no-sandbox')
-        # chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
         chromedriver = os.environ["webdriver_chrome"]
         os.environ["webdriver.chrome.driver"] = chromedriver
         self.driver = webdriver.Chrome(chromedriver,chrome_options=chrome_options)

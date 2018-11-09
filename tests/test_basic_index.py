@@ -14,7 +14,7 @@ import polls.globals as globals
 import polls.views
 
 class NewVisitorTest(TestCase):
-    def setUp(self):  
+    def setUp(self):
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
