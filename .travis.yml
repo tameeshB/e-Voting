@@ -4,10 +4,7 @@ language: python
 python:
   - "3.6"
 sudo: required
-env:
-  - MOZ_HEADLESS=1
 addons:
-  firefox: latest
   apt:
     sources:
       - google-chrome
@@ -21,13 +18,12 @@ install:
   - pip install -r REQUIREMENTS.txt
 before_script:
   - sh -e /etc/init.d/xvfb start
-  - wget https://chromedriver.storage.googleapis.com/2.43/chromedriver_linux64.zip
+  - LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
+  - wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - sudo chmod +x chromedriver
-  - ls -l
   - export webdriver_chrome=$PWD/chromedriver
   - export PATH=$PATH:$PWD/chromedriver
-  - echo $webdriver_chrome
   - test -e $webdriver_chrome && echo file exists || echo file not found
   - mysql -e 'create database evoting;' -u root
   - python manage.py makemigrations
