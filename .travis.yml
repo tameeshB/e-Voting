@@ -18,7 +18,7 @@ install:
   - pip install -r REQUIREMENTS.txt
 before_script:
   - sh -e /etc/init.d/xvfb start
-  - LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
+  - LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
   - wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - sudo chmod +x chromedriver
