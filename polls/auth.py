@@ -1,4 +1,4 @@
-from polls.globals import secretHash
+from polls.globals import secretHash, passwordSalt
 from hashlib import sha256
 from random import randint, sample
 from polls.models import TokenID, Voters, Votes1
@@ -6,7 +6,8 @@ import polls.vote as votelib
 
 # [5 digits][sha256 hash of that number]
 def authenticate(rollNo, password, token):
-
+    if password != genPassword(rollNo):
+        return "Wrong Password";
     # Password check first (left to be implemented)
     # Double voting
     if votelib.hasVoted(rollNo):
@@ -26,6 +27,9 @@ def authenticate(rollNo, password, token):
         return 'User has already voted!'
     return True
 
+
+def genPassword(rollNo):
+    return sha256((rollNo + passwordSalt).encode('utf-8')).hexdigest()[:5]
 
 # Checks valid format if present in table
 def valToken(token):

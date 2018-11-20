@@ -18,7 +18,8 @@ def storeVote(request):
 	try:
 		token = request.session['token']
 		voterID = request.session['rollno'].lower()
-		
+		webmailID = getWebmail(voterID)
+
 		if hasVoted(voterID):
 			return {'status': False, 'data': 'User {} has already voted!'.format(voterID)}
 
@@ -42,7 +43,7 @@ def storeVote(request):
 		htmlData = render_to_string('email/verifyToken.html', templateData) 
 		
 		sendMail(
-			request.session['webmail'] or '' ,
+			webmailID,
 			"Thank you for voting.",
 			emailTemplates['voteSignature'].format(globals['baseURL'],signature),
 			htmlData
@@ -54,7 +55,11 @@ def storeVote(request):
 
 
 def hasVoted(voterID):
-	return len(Voters.objects.filter(voterID=voterID)) > 0
+	return len(Voters.objects.filter(voterID=voterID,hasVoted=True)) > 0
+
+
+def getWebmail(voterID):
+	return Voters.objects.get(voterID=voterID).webmail or '' # @todo: Not an additional query
 
 
 def markTokenUsed(tokenID):
@@ -64,7 +69,8 @@ def markTokenUsed(tokenID):
 
 
 def markVoted(voterID):
-	voter = Voters(voterID=voterID, hasVoted=True)
+	voter = Voters.objects.get(voterID=voterID)
+	voter.hasVoted = True
 	voter.save()
 
 

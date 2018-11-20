@@ -1,0 +1,35 @@
+os:
+  - linux
+language: python
+python:
+  - "3.6"
+sudo: required
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+services:
+  - mysql
+env:
+  -DJANGO=2.1 DB=mysql
+install:
+  - pip install -r REQUIREMENTS.txt
+before_script:
+  - sh -e /etc/init.d/xvfb start
+  - LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
+  - wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - sudo chmod +x chromedriver
+  - export webdriver_chrome=$PWD/chromedriver
+  - export PATH=$PATH:$PWD/chromedriver
+  - test -e $webdriver_chrome && echo file exists || echo file not found
+  - mysql -e 'create database evoting;' -u root
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - python manage.py loaddata templateMigrationData.json
+  - python manage.py runserver &
+script:
+  - python manage.py test tests/
+  - kill %1

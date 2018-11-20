@@ -60,13 +60,13 @@
 						<nav>
 							<ul>
 								{% if noInit == True and published == False %}
-								<li><a href="{% url 'polls:init' %}">Init</a></li>
+								<li><a href="{% url 'polls:init' %}" id="initTabBtn">Init</a></li>
 								{% elif published == False or ongoing == True %}
-								<li><a href="#login">Login</a></li>
+								<li><a href="#login" id="loginTabBtn">Login</a></li>
 								{% elif published == True %}
-								<li><a href="#results">Results</a></li>
+								<li><a href="#results" id="resultsTabBtn">Results</a></li>
 								{% endif %}
-								<li><a href="#verify">Verify Vote</a></li>
+								<li><a href="#verify" id="verifyTabBtn">Verify Vote</a></li>
 							</ul>
 						</nav>
 					</header>
@@ -158,26 +158,6 @@
 									</ul>
 									{% endif %}
 								</form>
-								</b>
-						</article>
-						<article id="results">
-								<h2 class="major">Results</h2>
-								<b>
-								{% for position in positions %}
-								<section>
-									<h3>{{position.posName}}</h3>
-									<!--<hr />-->
-									<table style="width:100%">
-									{% for candidate in position.candidates %}
-										<tr>
-											<td style="width: 80%">{{candidate.name}} : <a href="{{candidate.agendaURL}}" target="_blank">Agenda</a></td>
-											<td>{{candidate.votes}} votes</td>
-										</tr>
-									{% endfor %}
-									</table>
-									<!--<hr />-->
-								</section>
-								{% endfor %}
 								</b>
 						</article>
 

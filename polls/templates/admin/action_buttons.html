@@ -18,6 +18,17 @@
             {% csrf_token %}
                 <button type="submit">Unpublish Results</button>
         </form>
+        <form action="fileUpload/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+                <input type="file" name="users" id="">
+                <input type="number" name="roll" placeholder="Roll">
+                <input type="number" name="webmail" placeholder="Webmail">
+                <button type="submit">Upload</button>
+        </form>
+        <form action="sendCredentialsEmail/" method="POST">
+            {% csrf_token %}
+                <button type="submit">Send Emails</button>
+        </form>
     </div>
     <br />
 {% endblock %}

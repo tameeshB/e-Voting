@@ -14,14 +14,9 @@ import polls.models as models
 # Create your views here.
 def index(request):
     noInit = False
-    showResults = False
 
     if 'init' not in request.session or any([ var not in request.session['init'] for var in globals.setDuringInit]):
         noInit = True
-    # Replace with logic for checking if election is over
-    if False:
-        showResults = True
-        positionList = bucket.fetchPositions(None)
 
     if 'token' in request.session.keys() or 'rollno' in request.session.keys():
         return HttpResponseRedirect(reverse('polls:logout'))

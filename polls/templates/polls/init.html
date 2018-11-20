@@ -46,7 +46,7 @@
 										{% for option in var.options %}
 										<div class="field half">
 											<input type="radio" id="{{var.name}}_{{option.id}}" name="{{var.name}}" value="{{option.id}}">
-											<label for="{{var.name}}_{{option.id}}"> {{option.name}}</label>
+											<label for="{{var.name}}_{{option.id}}" id="label_{{var.name}}_{{option.id}}"> {{option.name}}</label>
 										</div>
 										{% endfor %}
 									</div>
