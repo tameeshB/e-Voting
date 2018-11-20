@@ -2,33 +2,52 @@
 
 {% block object-tools %}
     <div>
-        <form action="start/" method="POST">
-            {% csrf_token %}
+        <fieldset style="padding:15px">
+            <legend>Start/Stop Poll</legend>
+            <form action="start/" method="POST">
+                {% csrf_token %}
                 <button type="submit">Start Poll</button>
-        </form>
-        <form action="stop/" method="POST">
-            {% csrf_token %}
+            </form>
+            <form action="stop/" method="POST">
+                {% csrf_token %}
                 <button type="submit">Stop Poll</button>
-        </form>
-        <form action="publishResults/" method="POST">
-            {% csrf_token %}
+            </form>
+        </fieldset>
+        <fieldset style="padding:15px">
+            <legend>Results</legend>
+            <form action="publishResults/" method="POST">
+                {% csrf_token %}
                 <button type="submit">Tally and Publish Results</button>
-        </form>
-        <form action="unpublish/" method="POST">
-            {% csrf_token %}
+            </form>
+            <form action="unpublish/" method="POST">
+                {% csrf_token %}
                 <button type="submit">Unpublish Results</button>
-        </form>
-        <form action="fileUpload/" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-                <input type="file" name="users" id="">
-                <input type="number" name="roll" placeholder="Roll">
-                <input type="number" name="webmail" placeholder="Webmail">
+            </form>
+        </fieldset>
+        <fieldset style="padding:15px">
+            <legend>Add voters</legend>
+            <form action="fileUpload/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                From File: <input type="file" name="users">
+                <input type="number" name="roll" placeholder="Column No with Roll" required>
+                <input type="number" name="webmail" placeholder="Column No with Webmail" required>
                 <button type="submit">Upload</button>
-        </form>
-        <form action="sendCredentialsEmail/" method="POST">
-            {% csrf_token %}
+            </form>
+            <form action="addVoter/" method="POST">
+                {% csrf_token %}
+                Manually: <input type="text" name="rollNo" placeholder="rollNo" required>
+                <input type="text" name="webmail" placeholder="webmail" required>
+                <button type="submit">Add Voter</button>
+            </form>
+        </fieldset>
+        <fieldset style="padding:15px">
+            <legend>Send Emails with Credentials</legend>
+            <form action="sendCredentialsEmail/" method="POST">
+                {% csrf_token %}
+                <input type="checkbox" name="confirm" id="" placeholder="" required> I confirm to send emails to all voters. <br>
                 <button type="submit">Send Emails</button>
-        </form>
+            </form>
+        </fieldset>
     </div>
     <br />
 {% endblock %}
@@ -77,6 +96,9 @@
 <style>
 .first{
     background-color: #b5f7e5b5;
+}
+fieldset{
+    padding:15px;
 }
 </style>
 {% endif %}
