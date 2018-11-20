@@ -1,3 +1,5 @@
+import os
+
 from django.contrib import admin
 from django.db import models
 from django.conf.urls import url
@@ -105,22 +107,34 @@ class ConfigVarsAdmin(admin.ModelAdmin):
         return HttpResponseRedirect("../")
     
     def fileUpload(self, request):
+        upload_dir = 'uploads/'
         noOfEntries = 0
         if request.FILES['users'] and request.POST.get('roll','') != '' and request.POST.get('webmail','') != '':
             myfile = request.FILES['users']
-            fs = FileSystemStorage(location='uploads/')
+            fs = FileSystemStorage(location=upload_dir)
             filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            # add parsed table data here.
-            # voter = Voters(voterID=voterID).save()
-        # self.model.objects.filter(varKey='publish').update(varVal=0)
-        self.message_user(request, "Data parsed for {} entries and file uploaded at: {}".format(noOfEntries, uploaded_file_url))
+            # add parsed table data here
+            upload_path = os.path.join(fs.location, filename)
+            result = util.parseEmailIds(upload_path, request.POST.get('roll',''), request.POST.get('webmail',''))
+            if result['status'] == False:
+                self.message_user(request, result['data'])
+                return HttpResponseRedirect("../")
+            else:
+                roll_no_li = result['data'][0]
+                webmail_li = result['data'][1]
+                voters = []
+                for roll_no, webmail in zip(roll_no_li, webmail_li):
+                    voters.append(Voters(voterID=roll_no, webmail=webmail))
+                noOfEntries = len(voters)
+                Voters.objects.bulk_create(voters)
+
+        self.message_user(request, "Data parsed for {} entries and file uploaded at: {}".format(noOfEntries, upload_path))
         return HttpResponseRedirect("../")
     
     def sendCredentialsEmail(self, request):
         noOfEmails = 0
         voterData = Voters.objects.all()
-        for voter in voterData:
+        for voter in voterData: 
             pswd = genPassword(voter.voterID)
             htmlData = ""
             templateData = globals.globals.copy()

@@ -61,11 +61,13 @@ class TokenID(models.Model):
     tokenID = models.CharField(max_length=5,primary_key=True)
     used = models.BooleanField(default=False)
 
+
 class ConfigVars(models.Model):
     varKey = models.CharField(max_length=10,default=0,primary_key=True)
     varVal = models.IntegerField(default=0)
     class Meta:
         verbose_name_plural = "Poll Control Panel"
+
 
 class TokenNo(models.Model):
     tokenNo = models.IntegerField(default=0)
@@ -76,6 +78,7 @@ class TokenNo(models.Model):
         genNTokens(self.tokenNo, ret_tokens=False)
         super(TokenNo, self).save()
         TokenNo.objects.all().delete()
+
 
 class TokenDash(TokenNo):
     class Meta:

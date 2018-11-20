@@ -11,6 +11,7 @@ from polls.models import Votes1, Voters, TokenID
 from polls.globals import secretHash,emailTemplates,globals
 from polls.util import sendMail
 
+
 def storeVote(request):
 	# result = {'status': False, 'data': 'Error! Vote not recorded!'}
 	# result = {'status': True, 'data': 'ivoted<3'}
