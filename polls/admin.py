@@ -62,6 +62,7 @@ class ConfigVarsAdmin(admin.ModelAdmin):
             path('unpublish/', self.unpublish),
             path('fileUpload/', self.fileUpload),
             path('sendCredentialsEmail/', self.sendCredentialsEmail),
+            path('addVoter/', self.addVoter),
         ]
         return my_urls + urls
     def changelist_view(self, request, extra_context=None):
@@ -130,7 +131,15 @@ class ConfigVarsAdmin(admin.ModelAdmin):
 
         self.message_user(request, "Data parsed for {} entries and file uploaded at: {}".format(noOfEntries, upload_path))
         return HttpResponseRedirect("../")
-    
+
+    def addVoter(self, request):
+        if request.POST.get('rollNo','') != '' and request.POST.get('webmail','') != '':
+            voter = Voters(voterID=request.POST.get('rollNo',''))
+            voter.webmail = request.POST.get('webmail','')
+            voter.save()
+        self.message_user(request, "Voter added : {}".format(request.POST.get('rollNo','')))
+        return HttpResponseRedirect("../")
+
     def sendCredentialsEmail(self, request):
         noOfEmails = 0
         voterData = Voters.objects.all()
@@ -146,7 +155,7 @@ class ConfigVarsAdmin(admin.ModelAdmin):
                 globals.emailTemplates['credential'].format(pswd),
                 htmlData
             )
-        noOfEmails += 1
+            noOfEmails += 1
         # self.model.objects.filter(varKey='publish').update(varVal=0)
         self.message_user(request, "Emails with credentials sent to {} webmail IDs.".format(noOfEmails))
         return HttpResponseRedirect("../")
