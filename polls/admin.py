@@ -124,9 +124,15 @@ class ConfigVarsAdmin(admin.ModelAdmin):
                 roll_no_li = result['data'][0]
                 webmail_li = result['data'][1]
                 voters = []
+                existing_voterIDs = list(Voters.objects.values_list('voterID', flat=True))
                 for roll_no, webmail in zip(roll_no_li, webmail_li):
-                    voters.append(Voters(voterID=roll_no, webmail=webmail))
-                noOfEntries = len(voters)
+                    if roll_no not in existing_voterIDs:
+                        voters.append(Voters(voterID=roll_no, webmail=webmail))
+                    else:
+                        v = Voters(voterID=roll_no, webmail=webmail)
+                        v.save()
+                        noOfEntries += 1
+                noOfEntries += len(voters)
                 Voters.objects.bulk_create(voters)
 
         self.message_user(request, "Data parsed for {} entries and file uploaded at: {}".format(noOfEntries, upload_path))
