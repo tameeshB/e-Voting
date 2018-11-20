@@ -1,5 +1,6 @@
 secretHash = ''
 clientKey = 'a'
+passwordSalt = ''
 globals = {
     'electionName' : 'Gymkhana Elections 2018',
     'baseURL' : 'https://evoting18.herokuapp.com',
@@ -25,6 +26,11 @@ emailTemplates = {
                         This email is an acknowledgement of your ballot.
                         You can verify your vote at any time by going to {}/verify and entering the 10-character token that you recieved before voting and comparing it with the signature given below.
                         Your vote signature is: {}
+
+                        Thanks,
+                        Gymkhana Election Committee""",
+    'credential':    """Hi!
+                        Password : {}
 
                         Thanks,
                         Gymkhana Election Committee"""

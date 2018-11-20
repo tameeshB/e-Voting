@@ -3,16 +3,20 @@ from django.db import models
 from django.conf.urls import url
 from django.urls import path
 from django.http import HttpResponse,HttpResponseRedirect
+from django.core.files.storage import FileSystemStorage
+from django.template.loader import render_to_string
 
 # Register your models here.
 
-from .models import Positions,Candidate,Bucket,TokenDash,ConfigVars
+from .models import Positions,Candidate,Bucket,TokenDash,ConfigVars,Voters
 import polls.bucket as bucket
 # from .models import Positions,Candidate,Bucket,ConfigVars
 from . import views
-from polls.auth import getUnusedTokens
+from polls.auth import getUnusedTokens, genPassword
 from polls.vote import tallyAllVotes
 import polls.util as util
+import polls.globals as globals
+
 admin.site.site_header = "eVoting Admin"
 admin.site.site_title = "eVoting Admin Portal"
 admin.site.index_title = "Welcome to eVoting Portal"
@@ -54,6 +58,8 @@ class ConfigVarsAdmin(admin.ModelAdmin):
             path('stop/', self.stopPoll),
             path('publishResults/', self.publishResults),
             path('unpublish/', self.unpublish),
+            path('fileUpload/', self.fileUpload),
+            path('sendCredentialsEmail/', self.sendCredentialsEmail),
         ]
         return my_urls + urls
     def changelist_view(self, request, extra_context=None):
@@ -96,4 +102,37 @@ class ConfigVarsAdmin(admin.ModelAdmin):
         self.model.objects.filter(varKey='publish').update(varVal=0)
         self.tally = tallyAllVotes(verify_votes=True, commit_tally=True)
         self.message_user(request, "Calculated results and published on home page.")
+        return HttpResponseRedirect("../")
+    
+    def fileUpload(self, request):
+        noOfEntries = 0
+        if request.FILES['users'] and request.POST.get('roll','') != '' and request.POST.get('webmail','') != '':
+            myfile = request.FILES['users']
+            fs = FileSystemStorage(location='uploads/')
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            # add parsed table data here.
+            # voter = Voters(voterID=voterID).save()
+        # self.model.objects.filter(varKey='publish').update(varVal=0)
+        self.message_user(request, "Data parsed for {} entries and file uploaded at: {}".format(noOfEntries, uploaded_file_url))
+        return HttpResponseRedirect("../")
+    
+    def sendCredentialsEmail(self, request):
+        noOfEmails = 0
+        voterData = Voters.objects.all()
+        for voter in voterData:
+            pswd = genPassword(voter.voterID)
+            htmlData = ""
+            templateData = globals.globals.copy()
+            templateData.update({ 'password' : pswd })
+            htmlData = render_to_string('email/credential.html', templateData) 
+            util.sendMail(
+                voter.webmail or '' ,
+                "Credentials for voting portal.",
+                globals.emailTemplates['credential'].format(pswd),
+                htmlData
+            )
+        noOfEmails += 1
+        # self.model.objects.filter(varKey='publish').update(varVal=0)
+        self.message_user(request, "Emails with credentials sent to {} webmail IDs.".format(noOfEmails))
         return HttpResponseRedirect("../")

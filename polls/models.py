@@ -6,6 +6,7 @@ from polls.globals import globals
 
 class Voters(models.Model):
     voterID = models.CharField(max_length=200,primary_key=True) # is roll No.
+    webmail = models.CharField(max_length=200, default='')
     hasVoted = models.BooleanField(default=False)
     def __str__(self):
         return self.voterID
