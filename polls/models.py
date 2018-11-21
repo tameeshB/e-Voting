@@ -12,7 +12,8 @@ class Voters(models.Model):
         return self.voterID
     def __rep__(self):
         return self.voterID
-
+    class Meta:
+        verbose_name_plural = "Voters"
 
 class Bucket(models.Model):
     bucketName = models.CharField(max_length=200,null=False)

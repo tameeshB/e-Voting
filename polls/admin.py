@@ -28,6 +28,9 @@ admin.site.register(Bucket)
 class CandidateAdmin(admin.ModelAdmin):
     readonly_fields = ['votes']
 
+@admin.register(Voters)
+class VotersAdmin(admin.ModelAdmin):
+    readonly_fields = ['hasVoted']
 
 # @todo: permission level
 @admin.register(TokenDash)
@@ -61,8 +64,9 @@ class ConfigVarsAdmin(admin.ModelAdmin):
             path('publishResults/', self.publishResults),
             path('unpublish/', self.unpublish),
             path('fileUpload/', self.fileUpload),
-            path('sendCredentialsEmail/', self.sendCredentialsEmail),
             path('addVoter/', self.addVoter),
+            path('sendCredentialsEmail/', self.sendCredentialsEmail),
+            path('sendSingleCredentialsEmail/', self.sendSingleCredentialsEmail),
         ]
         return my_urls + urls
     def changelist_view(self, request, extra_context=None):
@@ -164,4 +168,30 @@ class ConfigVarsAdmin(admin.ModelAdmin):
             noOfEmails += 1
         # self.model.objects.filter(varKey='publish').update(varVal=0)
         self.message_user(request, "Emails with credentials sent to {} webmail IDs.".format(noOfEmails))
+        return HttpResponseRedirect("../")
+    
+
+    def sendSingleCredentialsEmail(self, request):
+        if request.POST.get('roll','') != '' and request.POST.get('webmail','') != '':
+            try:
+                voterData = Voters.objects.get(voterID=request.POST.get('roll',''))
+                voterData.webmail = request.POST.get('webmail','')
+                voterData.save()
+                pswd = genPassword(voterData.voterID)
+                htmlData = ""
+                templateData = globals.globals.copy()
+                templateData.update({ 'password' : pswd })
+                htmlData = render_to_string('email/credential.html', templateData) 
+                util.sendMail(
+                    voterData.webmail or '' ,
+                    "Credentials for voting portal.",
+                    globals.emailTemplates['credential'].format(pswd),
+                    htmlData
+                )
+                self.message_user(request, "Email sent")
+            except Voters.DoesNotExist:
+                self.message_user(request, "Roll No. not found.")    
+        else:
+            self.message_user(request, "Email not sent : Invalid RollNo or Webmail ID")    
+        # self.model.objects.filter(varKey='publish').update(varVal=0)
         return HttpResponseRedirect("../")
