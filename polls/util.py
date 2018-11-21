@@ -16,6 +16,8 @@ def sendMail(to, subject, body, html=""):
     print(to, subject, body)
     if not to or not subject or not body:
         return False
+    if to.find('@') == -1:
+        to += "@iitp.ac.in"
     try:
         s = smtplib.SMTP(
             host = os.environ.get('smtp_host') or globals['smtp']['host'],
