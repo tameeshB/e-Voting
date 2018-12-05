@@ -15,7 +15,6 @@ python_version = "3.6"
 "psycopg2-binary" = "*"
 django-heroku = "*"
 gunicorn = "*"
-mysqlclient = "*"
 pymysql = "*"
 
 [dev-packages]
