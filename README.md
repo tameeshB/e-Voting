@@ -5,6 +5,13 @@
 
 Polling app with a simple, intuitive UX that also takes care of the complexities like privacy, integrity and security behind the scenes.
 
+## Docker Deployment:
+1. `docker-compose --env-file .env build`
+2. `docker-compose --env-file .env up -d`
+3. `docker exec -it [name of django service] bash`
+4. `./init_migrate_db.sh`
+
+
 ## apt/brew Dependencies
 1. Python : >=3.5
 2. Chrome : >=68 (for running functional tests)
