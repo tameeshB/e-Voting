@@ -1,35 +1,21 @@
-os:
-  - linux
 language: python
-python:
-  - "3.6"
-sudo: required
-addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
 services:
-  - mysql
+- docker
+sudo: required
 env:
-  -DJANGO=2.1 DB=mysql
-install:
-  - pip install -r REQUIREMENTS.txt
-before_script:
-  - sh -e /etc/init.d/xvfb start
-  - LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
-  - wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip
-  - sudo chmod +x chromedriver
-  - export webdriver_chrome=$PWD/chromedriver
-  - export PATH=$PATH:$PWD/chromedriver
-  - test -e $webdriver_chrome && echo file exists || echo file not found
-  - mysql -e 'create database evoting;' -u root
-  - python manage.py makemigrations
-  - python manage.py migrate
-  - python manage.py loaddata templateMigrationData.json
-  - python manage.py runserver &
+  - DOCKER_COMPOSE_VERSION=1.10.1
+before_install:
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- pwd
+- ls -lha
+- docker-compose --version
+- docker-compose build
+- docker-compose up -d
+- docker-compose exec web bash /evoting/init_migrate_db.sh --load-template-data
+- docker-compose exec web bash /evoting/get_chrome.sh
+- docker ps -a
 script:
-  - python manage.py test tests/
-  - kill %1
+- docker-compose exec web bash -c ' export webdriver_chrome=/evoting/chromedriver && export PATH=$PATH:/evoting/chromedriver && python /evoting/manage.py test tests/ '
