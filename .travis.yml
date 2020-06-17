@@ -1,35 +1,13 @@
-os:
-  - linux
 language: python
-python:
-  - "3.6"
+services:
+- docker
 sudo: required
 addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
-services:
-  - mysql
-env:
-  -DJANGO=2.1 DB=mysql
-install:
-  - pip install -r REQUIREMENTS.txt
-before_script:
-  - sh -e /etc/init.d/xvfb start
-  - LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
-  - wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip
-  - sudo chmod +x chromedriver
-  - export webdriver_chrome=$PWD/chromedriver
-  - export PATH=$PATH:$PWD/chromedriver
-  - test -e $webdriver_chrome && echo file exists || echo file not found
-  - mysql -e 'create database evoting;' -u root
-  - python manage.py makemigrations
-  - python manage.py migrate
-  - python manage.py loaddata templateMigrationData.json
-  - python manage.py runserver &
+  chrome: stable
+before_install:
+- docker-compose --env-file .env build
+- docker-compose --env-file .env up -d
+- docker-compose exec web bash /evoting/init_migrate_db.sh --load-template-data
+- docker ps -a
 script:
-  - python manage.py test tests/
-  - kill %1
+- docker-compose exec web python /evoting/manage.py test tests/
