@@ -8,8 +8,7 @@ Polling app with a simple, intuitive UX that also takes care of the complexities
 ## Docker Deployment:
 1. `docker-compose --env-file .env build`
 2. `docker-compose --env-file .env up -d`
-3. `docker exec -it [name of django service] bash`
-4. `./init_migrate_db.sh`
+3. `docker-compose exec web bash /evoting/init_migrate_db.sh --load-template-data`
 
 
 ## apt/brew Dependencies
