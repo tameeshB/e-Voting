@@ -15,7 +15,9 @@ before_install:
 - docker-compose build
 - docker-compose up -d
 - docker-compose exec web bash /evoting/init_migrate_db.sh --load-template-data
-- docker-compose exec web bash -c "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+- docker-compose exec web bash -c "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
+    apt-get update && apt-get -y install google-chrome-stable && \
     dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install && \
     LATEST_RELEASE=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
     wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip && \
