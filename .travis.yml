@@ -2,8 +2,6 @@ language: python
 services:
 - docker
 sudo: required
-addons:
-  chrome: stable
 env:
   - DOCKER_COMPOSE_VERSION=1.10.1
 before_install:
@@ -11,19 +9,21 @@ before_install:
 - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
-- LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
-- wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip
-- unzip chromedriver_linux64.zip
-- sudo chmod +x chromedriver
-- export webdriver_chrome=$PWD/chromedriver
-- export PATH=$PATH:$PWD/chromedriver
-- test -e $webdriver_chrome && echo file exists || echo file not found
 - pwd
 - ls -lha
 - docker-compose --version
 - docker-compose build
 - docker-compose up -d
 - docker-compose exec web bash /evoting/init_migrate_db.sh --load-template-data
+- docker-compose exec web bash -c "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install && \
+    LATEST_RELEASE=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
+    wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip && \
+    unzip chromedriver_linux64.zip && \
+    chmod +x chromedriver && \
+    export webdriver_chrome=$PWD/chromedriver && \
+    export PATH=$PATH:$PWD/chromedriver && \
+    test -e $webdriver_chrome && echo file exists || echo file not found " 
 - docker ps -a
 script:
 - docker-compose exec web python /evoting/manage.py test tests/
