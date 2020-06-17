@@ -1,6 +1,6 @@
 # e-Voting   
 ![Travis-CI](https://travis-ci.com/tameeshB/e-Voting.svg?token=yq4nW8BVWTzVvWaLxEXv&branch=master)
-![Django](https://img.shields.io/badge/Django-2.1+-orange.svg)
+![Django](https://img.shields.io/badge/Django-3.0+-orange.svg)
 ![Python](https://img.shields.io/badge/Python-3.5%2B-blue.svg)
 
 Polling app with a simple, intuitive UX that also takes care of the complexities like privacy, integrity and security behind the scenes.
