@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'evoting.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': os.environ.get('MYSQL_DB'),
-        'USER': os.environ.get('MYSQL_User'),
-        'PASSWORD': os.environ.get('MYSQL_Pass'),
-        'HOST': os.environ.get('MYSQL_Host'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('MYSQL_DATABASE'),
+        'USER': 'root', # os.environ.get('MYSQL_USER')
+        'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD'),
+        'HOST': os.environ.get('MYSQL_HOST'),
         'PORT': '3306',
     }
 }
