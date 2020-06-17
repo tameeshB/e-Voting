@@ -28,4 +28,4 @@ before_install:
     test -e $webdriver_chrome && echo file exists || echo file not found " 
 - docker ps -a
 script:
-- docker-compose exec -e webdriver_chrome=$PWD/chromedriver web python /evoting/manage.py test tests/
+- docker-compose exec web bash -c ' export webdriver_chrome="$PWD/chromedriver" && python /evoting/manage.py test tests/ '
