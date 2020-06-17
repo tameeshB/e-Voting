@@ -14,8 +14,8 @@ before_install:
 - pwd
 - ls -lha
 - docker-compose --version
-- docker-compose --env-file .env build
-- docker-compose --env-file .env up -d
+- docker-compose build
+- docker-compose up -d
 - docker-compose exec web bash /evoting/init_migrate_db.sh --load-template-data
 - docker ps -a
 script:
