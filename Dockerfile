@@ -9,4 +9,3 @@ RUN . voting_/bin/activate
 RUN pip install -r REQUIREMENTS.txt
 ADD . /evoting/
 RUN chmod +x init_migrate_db.sh
-

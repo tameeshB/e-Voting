@@ -7,7 +7,7 @@ if [[ $? -ne 0 ]]; then
     echo "Couldn't load migrations into DB."
     exit 1
 fi
-if [[ ! -f templateMigrationData.lock ]]; then
+if [[ ! -f templateMigrationData.lock && $1 -eq "--load-template-data" ]]; then
     python manage.py loaddata templateMigrationData.json
     now="$(date)"
     echo "templateMigrationData loaded at $now" > templateMigrationData.lock
@@ -16,5 +16,3 @@ else
     cat templateMigrationData.lock
     echo "Reloading would result in losing all generated data in the DB."
 fi
-
-python manage.py runserver 0.0.0.0:8000
