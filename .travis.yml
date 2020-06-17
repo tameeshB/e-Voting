@@ -11,6 +11,13 @@ before_install:
 - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
+- LATEST_RELEASE="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
+- wget https://chromedriver.storage.googleapis.com/$LATEST_RELEASE/chromedriver_linux64.zip
+- unzip chromedriver_linux64.zip
+- sudo chmod +x chromedriver
+- export webdriver_chrome=$PWD/chromedriver
+- export PATH=$PATH:$PWD/chromedriver
+- test -e $webdriver_chrome && echo file exists || echo file not found
 - pwd
 - ls -lha
 - docker-compose --version
